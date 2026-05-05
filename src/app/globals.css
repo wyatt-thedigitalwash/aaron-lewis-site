@@ -1,35 +1,323 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #0A0A0A;
+  --bg-elevated: #141414;
+  --ink: #BCB4A6;
+  --ink-muted: #8A8275;
+  --accent: #A02B28;
+  --accent-hover: #872422;
+  --rule: #2A2620;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-bg: var(--bg);
+  --color-elevated: var(--bg-elevated);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-rule: var(--rule);
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-zilla), serif;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--ink);
 }
 
 /* Section Spacing Rule:
    Remove top padding from a section when the previous sibling
    section has the same data-bg value. */
-section[data-bg="light"] + section[data-bg="light"],
 section[data-bg="dark"] + section[data-bg="dark"],
+section[data-bg="elevated"] + section[data-bg="elevated"],
 section[data-bg="accent"] + section[data-bg="accent"] {
   padding-top: 0;
+}
+
+/* Bandsintown widget overrides
+   Scoped to our wrapper so they don't leak to other components.
+
+   Actual widget class names (from widget.bandsintown.com/main.min.js):
+   - .bit-widget              — root container
+   - .bit-nav-bar-container   — top bar (holds track button + logo)
+   - .bit-nav-bar             — flex row inside nav bar
+   - .bit-top-track-button    — "Track to get concert..." promo text
+   - .bit-logo-container      — Bandsintown logo wrapper (right-aligned)
+   - .bit-logo                — logo element
+   - .bit-logo-desktop        — desktop logo variant
+   - .bit-logo-mobile         — mobile logo variant
+   - .bit-event-list-title    — "Upcoming Events" subheading
+   - .bit-event               — each event row
+   - .bit-details             — wraps date + venue + location
+   - .bit-date                — date column
+   - .bit-titleWrapper        — wraps venue (desktop)
+   - .bit-venue               — venue name/link
+   - .bit-location            — city/location text
+   - .bit-event-buttons       — button container
+   - .bit-rsvp-container      — RSVP button wrapper
+   - .bit-rsvp                — RSVP button
+   - .bit-offers-container    — tickets button wrapper
+   - .bit-offers              — tickets button
+   - .bit-track-button        — inline track button
+*/
+[role="region"][aria-label="Tour Dates"] {
+
+  /* Hide the "Track to get concert..." promo header */
+  .bit-top-track-button {
+    display: none !important;
+  }
+
+  /* Hide the Bandsintown logo */
+  .bit-logo-container,
+  .bit-logo,
+  .bit-logo-desktop,
+  .bit-logo-mobile {
+    display: none !important;
+  }
+
+  /* Hide the nav bar container entirely (it only holds promo + logo) */
+  .bit-nav-bar-container {
+    display: none !important;
+  }
+
+  /* Hide the redundant "Upcoming Events" subheading */
+  .bit-event-list-title {
+    display: none !important;
+  }
+
+  /* Hide "Show All Dates" button (redundant, we have our own "View All Dates" link) */
+  .bit-upcoming-events-show-all-button,
+  .bit-past-events-show-all-button {
+    display: none !important;
+  }
+
+  /* Hide inline track buttons within events */
+  .bit-track-button {
+    display: none !important;
+  }
+
+  /* Event row */
+  .bit-event {
+    border-top: none !important;
+    border-bottom: 1px solid var(--rule) !important;
+    padding: 17px 0 !important;
+  }
+
+  /* Date column */
+  .bit-date {
+    min-width: 110px !important;
+    font-family: var(--font-inter), system-ui, sans-serif !important;
+    font-weight: 500 !important;
+    color: var(--ink) !important;
+  }
+
+  /* Venue / event title */
+  .bit-venue,
+  .bit-venue a,
+  .bit-titleWrapper,
+  .bit-titleWrapper a {
+    color: var(--ink) !important;
+    font-family: var(--font-inter), system-ui, sans-serif !important;
+    text-decoration: none !important;
+  }
+
+  .bit-venue a:hover,
+  .bit-titleWrapper a:hover {
+    color: var(--accent) !important;
+  }
+
+  /* City / location */
+  .bit-location {
+    color: var(--ink-muted) !important;
+    font-family: var(--font-inter), system-ui, sans-serif !important;
+    font-weight: 400 !important;
+  }
+
+  /* Shared button base — font and cursor only */
+  .bit-rsvp,
+  .bit-offers,
+  .bit-button {
+    font-family: var(--font-inter), system-ui, sans-serif !important;
+    font-weight: 500 !important;
+    cursor: pointer !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Button containers — collapse spacing */
+  .bit-rsvp-container,
+  .bit-offers-container {
+    margin: 0 !important;
+    padding: 0 !important;
+    height: auto !important;
+    min-height: unset !important;
+  }
+
+  /* Event buttons wrapper */
+  .bit-event-buttons {
+    margin: 0 !important;
+    align-items: center !important;
+  }
+}
+
+/* Bandsintown DESKTOP button overrides — text-link style */
+@media (min-width: 768px) {
+  [role="region"][aria-label="Tour Dates"] {
+
+    /* Hide RSVP on desktop */
+    .bit-rsvp-container,
+    .bit-rsvp {
+      display: none !important;
+    }
+
+    /* Text-link style for Tickets */
+    .bit-offers,
+    .bit-button {
+      background: transparent !important;
+      border: none !important;
+      color: var(--accent) !important;
+      font-size: 14px !important;
+      letter-spacing: 0.01em !important;
+      padding: 0 !important;
+      height: auto !important;
+      min-height: unset !important;
+      line-height: 1 !important;
+      border-radius: 0 !important;
+      transition: color 0.15s !important;
+      text-transform: none !important;
+    }
+
+    .bit-offers:hover,
+    .bit-button:hover {
+      color: var(--accent-hover) !important;
+    }
+
+    /* Append arrow after Tickets text */
+    .bit-offers::after {
+      content: " \2197" !important;
+      font-size: 12px !important;
+    }
+
+    .bit-event-buttons {
+      flex-direction: row !important;
+      gap: 0 !important;
+    }
+  }
+}
+
+/* Bandsintown mobile layout overrides */
+@media (max-width: 767px) {
+  [role="region"][aria-label="Tour Dates"] {
+
+    /* Stack event rows vertically */
+    .bit-event {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 8px !important;
+      padding: 20px 0 !important;
+    }
+
+    /* Details section stacks vertically at full width */
+    .bit-details {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      gap: 4px !important;
+      width: 100% !important;
+    }
+
+    /* Date takes full width */
+    .bit-date {
+      min-width: unset !important;
+      width: 100% !important;
+    }
+
+    /* Venue takes full width */
+    .bit-venue,
+    .bit-titleWrapper {
+      width: 100% !important;
+      margin: 0 !important;
+    }
+
+    /* Location takes full width */
+    .bit-location {
+      width: 100% !important;
+      margin: 0 !important;
+      text-align: left !important;
+    }
+
+    /* Show RSVP on mobile */
+    .bit-rsvp-container,
+    .bit-rsvp {
+      display: flex !important;
+    }
+
+    /* Remove desktop text-link arrow on mobile */
+    .bit-offers::after {
+      content: none !important;
+    }
+
+    /* Strip container borders/backgrounds that cause double-border effect */
+    .bit-rsvp-container,
+    .bit-offers-container {
+      flex: 1 !important;
+      border: none !important;
+      background: transparent !important;
+      border-radius: 0 !important;
+      overflow: visible !important;
+    }
+
+    /* Restore button box styles on mobile */
+    .bit-rsvp,
+    .bit-offers {
+      padding: 10px 20px !important;
+      font-size: 13px !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.025em !important;
+      border-radius: 2px !important;
+      text-align: center !important;
+      justify-content: center !important;
+      width: 100% !important;
+      line-height: 1.2 !important;
+      transition: background-color 0.15s, border-color 0.15s, color 0.15s !important;
+    }
+
+    /* RSVP: ghost style */
+    .bit-rsvp {
+      background: transparent !important;
+      border: 1px solid var(--ink) !important;
+      color: var(--ink) !important;
+    }
+
+    .bit-rsvp:hover {
+      background: var(--ink) !important;
+      color: var(--bg) !important;
+    }
+
+    /* Tickets: accent solid (1px transparent border to match RSVP height) */
+    .bit-offers {
+      background: var(--accent) !important;
+      border: 1px solid var(--accent) !important;
+      color: var(--ink) !important;
+    }
+
+    .bit-offers:hover {
+      background: var(--accent-hover) !important;
+    }
+
+    /* Buttons sit below text as a horizontal pair */
+    .bit-event-buttons {
+      display: flex !important;
+      flex-direction: row !important;
+      width: 100% !important;
+      gap: 12px !important;
+      margin-top: 12px !important;
+    }
+  }
 }
