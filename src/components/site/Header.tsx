@@ -5,14 +5,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X, ArrowUpRight } from "lucide-react";
-import { ctaCopy, PRESAVE_URL } from "@/lib/campaign";
+
+import { SocialIcons } from "./SocialIcons";
+import { PRESAVE_URL, availabilityCopy } from "@/lib/campaign";
 
 const NAV_ITEMS = [
   { label: "Home", href: "/" },
   { label: "Tour", href: "/tour" },
   { label: "Music", href: "/music" },
   { label: "Videos", href: "/videos" },
-  { label: "About", href: "/about" },
 ];
 
 const EXTERNAL_NAV = [
@@ -35,7 +36,7 @@ function NavLink({
     <Link
       href={href}
       onClick={onClick}
-      className={`relative text-sm font-medium transition-colors ${
+      className={`relative text-[17px] font-medium transition-colors ${
         active
           ? "text-ink after:absolute after:left-0 after:bottom-[-6px] after:h-px after:w-full after:bg-accent"
           : "text-ink-muted hover:text-ink"
@@ -62,43 +63,30 @@ function ExternalNavLink({
       rel="noopener noreferrer"
       aria-label={`${label} (opens in new tab)`}
       onClick={onClick}
-      className="flex items-center gap-0.5 text-sm font-medium text-ink-muted transition-colors hover:text-ink"
+      className="flex items-center gap-0.5 text-[17px] font-medium text-ink-muted transition-colors hover:text-ink"
     >
       {label}
-      <ArrowUpRight size={14} />
+      <ArrowUpRight size={12} />
     </a>
   );
 }
 
 export function Header() {
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
   const pathname = usePathname();
 
-  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const toggleButtonRef = useRef<HTMLButtonElement>(null);
+  const firstLinkRef = useRef<HTMLAnchorElement>(null);
 
-  const openDrawer = useCallback(() => {
-    if (closeTimer.current) {
-      clearTimeout(closeTimer.current);
-      closeTimer.current = null;
-    }
-    setDrawerOpen(true);
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        setIsVisible(true);
-      });
-    });
+  const toggleDrawer = useCallback(() => {
+    setDrawerOpen((prev) => !prev);
   }, []);
 
   const closeDrawer = useCallback(() => {
-    if (!drawerOpen || closeTimer.current) return;
-    setIsVisible(false);
-    closeTimer.current = setTimeout(() => {
-      setDrawerOpen(false);
-      closeTimer.current = null;
-    }, 250);
-  }, [drawerOpen]);
+    setDrawerOpen(false);
+  }, []);
 
+  // Body scroll lock
   useEffect(() => {
     if (drawerOpen) {
       document.body.style.overflow = "hidden";
@@ -110,12 +98,33 @@ export function Header() {
     };
   }, [drawerOpen]);
 
-  // Animated close on route change
+  // Focus first nav link when drawer opens, return focus when it closes
   useEffect(() => {
     if (drawerOpen) {
-      closeDrawer();
+      requestAnimationFrame(() => {
+        firstLinkRef.current?.focus();
+      });
+    } else {
+      toggleButtonRef.current?.focus();
     }
-  }, [pathname]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [drawerOpen]);
+
+  // Close on route change
+  useEffect(() => {
+    closeDrawer();
+  }, [pathname, closeDrawer]);
+
+  // Close on Escape
+  useEffect(() => {
+    if (!drawerOpen) return;
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        closeDrawer();
+      }
+    }
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [drawerOpen, closeDrawer]);
 
   const allNavItems = [
     ...NAV_ITEMS.map((item) => ({ ...item, external: false })),
@@ -124,20 +133,25 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-rule bg-bg">
-      <div className="mx-auto flex h-[60px] max-w-7xl items-center justify-between px-4 lg:h-[72px] lg:px-6">
+      {/* Desktop: three-column grid */}
+      <div className="relative mx-auto hidden h-[80px] max-w-[1920px] items-center justify-between px-6 md:px-8 lg:flex lg:px-12">
+        {/* Left: wordmark */}
         <Link href="/" aria-label="Aaron Lewis - Home">
           <Image
-            src="/images/aaron-lewis-signature.png"
+            src="/branding/AaronLewis_LogoName.png"
             alt="Aaron Lewis"
             width={160}
             height={40}
             priority
-            className="h-8 w-auto lg:h-10"
+            className="h-9 w-auto"
           />
         </Link>
 
-        {/* Desktop nav */}
-        <nav aria-label="Primary" className="hidden items-center gap-6 lg:flex">
+        {/* Center: nav — absolutely positioned so it's truly centered regardless of left/right widths */}
+        <nav
+          aria-label="Primary"
+          className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center gap-8"
+        >
           {NAV_ITEMS.map((item) => (
             <NavLink
               key={item.href}
@@ -153,127 +167,140 @@ export function Header() {
               label={item.label}
             />
           ))}
+        </nav>
+
+        {/* Right: social icons */}
+        <SocialIcons size={22} />
+      </div>
+
+      {/* Mobile: wordmark + hamburger/close toggle */}
+      <div className="mx-auto flex h-[60px] max-w-screen-2xl items-center justify-between px-6 md:px-8 lg:hidden">
+        <Link href="/" aria-label="Aaron Lewis - Home">
+          <Image
+            src="/branding/AaronLewis_LogoName.png"
+            alt="Aaron Lewis"
+            width={160}
+            height={40}
+            priority
+            className="h-8 w-auto"
+          />
+        </Link>
+
+        <button
+          ref={toggleButtonRef}
+          type="button"
+          onClick={toggleDrawer}
+          aria-label={drawerOpen ? "Close menu" : "Open menu"}
+          aria-expanded={drawerOpen}
+          aria-controls="mobile-drawer"
+          className="text-ink transition-transform duration-150 ease-out"
+          style={{ transform: drawerOpen ? "rotate(0deg)" : "rotate(0deg)" }}
+        >
+          <span
+            className="block transition-transform duration-150 ease-out"
+            style={{ transform: drawerOpen ? "rotate(90deg)" : "rotate(0deg)" }}
+          >
+            {drawerOpen ? <X size={28} /> : <Menu size={28} />}
+          </span>
+        </button>
+      </div>
+
+      {/* Mobile drawer — renders below the header */}
+      <div
+        id="mobile-drawer"
+        role="dialog"
+        aria-modal={drawerOpen}
+        aria-label="Site navigation"
+        aria-hidden={!drawerOpen}
+        className={`fixed inset-x-0 bottom-0 top-[60px] z-40 overflow-hidden bg-bg transition-[opacity,transform] duration-200 ease-out lg:hidden ${
+          drawerOpen
+            ? "pointer-events-auto translate-y-0 opacity-100"
+            : "pointer-events-none -translate-y-2 opacity-0"
+        }`}
+      >
+        <nav
+          aria-label="Primary"
+          className="flex h-full flex-col items-start gap-5 px-6 pt-8"
+        >
+          {allNavItems.map((item, i) =>
+            item.external ? (
+              <a
+                key={item.href}
+                ref={i === 0 ? firstLinkRef : undefined}
+                href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${item.label} (opens in new tab)`}
+                onClick={closeDrawer}
+                className="flex items-center gap-1 font-display text-3xl font-normal text-ink-muted transition-colors hover:text-ink"
+                style={{
+                  opacity: drawerOpen ? 1 : 0,
+                  transition: `opacity 200ms ease-out ${i * 30}ms`,
+                }}
+              >
+                {item.label}
+                <ArrowUpRight size={20} />
+              </a>
+            ) : (
+              <Link
+                key={item.href}
+                ref={i === 0 ? (firstLinkRef as React.Ref<HTMLAnchorElement>) : undefined}
+                href={item.href}
+                onClick={closeDrawer}
+                className={`font-display text-3xl font-normal transition-colors ${
+                  pathname === item.href
+                    ? "text-ink"
+                    : "text-ink-muted hover:text-ink"
+                }`}
+                style={{
+                  opacity: drawerOpen ? 1 : 0,
+                  transition: `opacity 200ms ease-out ${i * 30}ms`,
+                }}
+              >
+                {item.label}
+              </Link>
+            )
+          )}
+
+          {/* Social icons */}
+          <SocialIcons
+            size={24}
+            className="mt-8 flex gap-6"
+          />
+
+          {/* Pre-save campaign block — fills remaining space */}
           <a
             href={PRESAVE_URL}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label={`${ctaCopy()} (opens in new tab)`}
-            className="rounded-[2px] bg-accent px-6 py-2.5 text-sm font-medium tracking-wide text-ink shadow-[inset_0_0_0_1px_rgba(188,180,166,0.2)] transition-colors hover:bg-accent-hover"
+            aria-label="Pre-save Give My Country Back (opens in new tab)"
+            onClick={closeDrawer}
+            className="relative mt-auto block w-full flex-1 min-h-0 overflow-hidden transition-opacity duration-200 hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           >
-            {ctaCopy()}
+            {/* Background image */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/images/hamburger/AaronLewis_HamburgerImage.jpg"
+              alt=""
+              className="absolute inset-0 h-full w-full object-cover object-center"
+            />
+            {/* Dark overlay */}
+            <div className="absolute inset-0 bg-bg/50" />
+            {/* Content */}
+            <div className="absolute inset-0 flex flex-col items-center justify-center">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/branding/ArrowLewis_GiveMyCountryBack_LogoText.png"
+                alt=""
+                className="h-auto w-full max-w-[260px]"
+              />
+              <p className="mt-4 text-center text-xl text-ink">
+                {availabilityCopy()}
+              </p>
+            </div>
           </a>
         </nav>
-
-        {/* Mobile hamburger */}
-        <button
-          type="button"
-          onClick={openDrawer}
-          aria-label="Open menu"
-          className="text-ink lg:hidden"
-        >
-          <Menu size={28} />
-        </button>
       </div>
-
-      {/* Mobile drawer */}
-      {drawerOpen && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          aria-label="Mobile navigation"
-          className={`fixed inset-0 z-[60] flex flex-col bg-bg transition-opacity duration-300 ease-out ${
-            isVisible ? "opacity-100" : "opacity-0"
-          }`}
-        >
-          {/* Header bar */}
-          <div
-            className={`flex h-[60px] items-center justify-between px-4 transition-transform duration-300 ease-out ${
-              isVisible ? "translate-y-0" : "-translate-y-2"
-            }`}
-          >
-            <Link href="/" onClick={closeDrawer} aria-label="Aaron Lewis - Home">
-              <Image
-                src="/images/aaron-lewis-signature.png"
-                alt="Aaron Lewis"
-                width={160}
-                height={40}
-                className="h-8 w-auto"
-              />
-            </Link>
-            <button
-              type="button"
-              onClick={closeDrawer}
-              aria-label="Close menu"
-              className="text-ink"
-            >
-              <X size={28} />
-            </button>
-          </div>
-
-          {/* Nav items with staggered entrance */}
-          <nav
-            aria-label="Primary"
-            className="flex flex-1 flex-col items-start gap-6 px-6 pt-10"
-          >
-            {allNavItems.map((item, i) =>
-              item.external ? (
-                <a
-                  key={item.href}
-                  href={item.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`${item.label} (opens in new tab)`}
-                  onClick={closeDrawer}
-                  className={`flex items-center gap-1 font-display text-3xl font-semibold text-ink-muted transition-all duration-300 ease-out hover:text-ink ${
-                    isVisible
-                      ? "translate-y-0 opacity-100"
-                      : "translate-y-4 opacity-0"
-                  }`}
-                  style={{ transitionDelay: `${75 + i * 50}ms` }}
-                >
-                  {item.label}
-                  <ArrowUpRight size={20} />
-                </a>
-              ) : (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={closeDrawer}
-                  className={`font-display text-3xl font-semibold transition-all duration-300 ease-out ${
-                    pathname === item.href
-                      ? "text-ink"
-                      : "text-ink-muted hover:text-ink"
-                  } ${
-                    isVisible
-                      ? "translate-y-0 opacity-100"
-                      : "translate-y-4 opacity-0"
-                  }`}
-                  style={{ transitionDelay: `${75 + i * 50}ms` }}
-                >
-                  {item.label}
-                </Link>
-              )
-            )}
-            <a
-              href={PRESAVE_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={`${ctaCopy()} (opens in new tab)`}
-              onClick={closeDrawer}
-              className={`mt-4 rounded-[2px] bg-accent px-6 py-3 font-display text-xl font-semibold tracking-wide text-ink shadow-[inset_0_0_0_1px_rgba(188,180,166,0.2)] transition-all duration-300 ease-out hover:bg-accent-hover ${
-                isVisible
-                  ? "translate-y-0 opacity-100"
-                  : "translate-y-4 opacity-0"
-              }`}
-              style={{
-                transitionDelay: `${75 + allNavItems.length * 50}ms`,
-              }}
-            >
-              {ctaCopy()}
-            </a>
-          </nav>
-        </div>
-      )}
     </header>
   );
 }

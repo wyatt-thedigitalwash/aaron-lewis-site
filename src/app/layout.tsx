@@ -1,23 +1,7 @@
 import type { Metadata } from "next";
-// CSS variable kept as --font-zilla for backwards compatibility. Font family swapped from Zilla Slab to Domine.
-import { Domine, Inter } from "next/font/google";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import "./globals.css";
-
-const domine = Domine({
-  variable: "--font-zilla",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  display: "swap",
-});
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  weight: ["400", "500"],
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://aaronlewismusic.com"),
@@ -27,12 +11,14 @@ export const metadata: Metadata = {
   },
   description:
     "The official site of Aaron Lewis. New album available July 10.",
+  icons: {
+    icon: "/favicon.jpg",
+  },
   openGraph: {
     title: "Aaron Lewis",
     description:
       "The official site of Aaron Lewis. New album available July 10.",
-    // TODO: Replace with dedicated 1200x630 OG image when BMLG provides one. AaronLewis_Hero.jpg used as fallback.
-    images: ["/images/AaronLewis_Hero.jpg"],
+    images: ["/open-graph.jpg"],
     type: "website",
   },
   twitter: {
@@ -46,10 +32,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${domine.variable} ${inter.variable} h-full antialiased`}
-    >
+    <html lang="en" className="h-full antialiased">
+      <head>
+        <link rel="preconnect" href="https://use.typekit.net" />
+        <link rel="preconnect" href="https://p.typekit.net" crossOrigin="anonymous" />
+        <link rel="stylesheet" href="https://use.typekit.net/sas4nlb.css" />
+      </head>
       <body className="min-h-full flex flex-col">
         <Header />
         <main className="flex-1">{children}</main>

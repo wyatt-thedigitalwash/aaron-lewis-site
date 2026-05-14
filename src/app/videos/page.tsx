@@ -41,10 +41,7 @@ export default function VideosPage() {
       {/* Page header */}
       <section className="bg-bg px-6 pb-8 pt-24 md:px-8 lg:pb-12 lg:pt-32">
         <div className="mx-auto max-w-7xl">
-          <p className="mb-4 text-xs font-medium uppercase tracking-[0.2em] text-ink-muted">
-            Watch
-          </p>
-          <h1 className="font-display text-6xl font-bold leading-none text-ink lg:text-7xl">
+          <h1 className="font-display text-6xl font-normal leading-none text-ink lg:text-7xl">
             Videos
           </h1>
           <p className="mt-6 max-w-xl text-lg text-ink">

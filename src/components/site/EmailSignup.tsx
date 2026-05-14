@@ -17,7 +17,7 @@ export function EmailSignup({
         </p>
 
         {/* Heading */}
-        <h2 className="font-display text-4xl font-bold leading-tight text-ink lg:text-5xl">
+        <h2 className="font-display text-5xl font-normal leading-tight text-ink lg:text-6xl">
           {heading}
         </h2>
 

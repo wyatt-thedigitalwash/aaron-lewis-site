@@ -15,10 +15,7 @@ function PageHeader() {
   return (
     <section className="bg-bg px-6 pb-12 pt-24 md:px-8 lg:pb-16 lg:pt-32">
       <div className="mx-auto max-w-7xl">
-        <p className="mb-4 text-xs font-medium uppercase tracking-[0.2em] text-ink-muted">
-          On The Road
-        </p>
-        <h1 className="font-display text-6xl font-bold leading-none text-ink lg:text-7xl">
+        <h1 className="font-display text-6xl font-normal leading-none text-ink lg:text-7xl">
           Tour
         </h1>
         <p className="mt-6 max-w-xl text-lg text-ink">
@@ -40,13 +37,13 @@ function BandsintownWidget() {
             data-display-local-dates="false"
             data-display-past-dates="false"
             data-auto-style="false"
-            data-text-color="#BCB4A6"
-            data-link-color="#A02B28"
-            data-background-color="#0A0A0A"
+            data-text-color="#BCB2A5"
+            data-link-color="#B63D35"
+            data-background-color="#0E0E0E"
             data-display-limit="all"
             data-display-lineup="false"
             data-display-play-my-city="false"
-            data-separator-color="#2A2620"
+            data-separator-color="#2A2622"
           />
         </div>
         <Script

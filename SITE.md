@@ -18,26 +18,28 @@
 
 Define this as a TypeScript constant in `src/lib/campaign.ts` that the rest of the site reads from. Single source of truth.
 
-## Brand Colors (CSS variables in globals.css)
+## Brand Colors (BMLG official, from project toolkit)
+Corrected to match the BMLG project toolkit exactly; a prior pass used approximate values.
 ```
---bg: #0A0A0A
---bg-elevated: #141414
---ink: #D9CFB8
---ink-muted: #8A8275
---accent: #A8302E
---accent-hover: #8F2725
---rule: #2A2620
+--bg: #0E0E0E (Black, background)
+--bg-elevated: #181818 (slight lift)
+--ink: #BCB2A5 (Khaki, body copy)
+--ink-muted: #7A7165 (desaturated khaki, secondary text)
+--accent: #B63D35 (Red, headlines and CTAs)
+--accent-hover: #993229 (darkened red, hover state)
+--rule: #2A2622 (warm dark separator)
 ```
 
 Set body background to `--bg` and body text to `--ink`.
 
-## Typography
-- Display: Domine from Google Fonts, weights 400, 500, 600, and 700, used for h1-h4 and CTAs
-- Variable name in code is --font-zilla, kept for compatibility. Font family is Domine.
-- Body: Inter from Google Fonts, weights 400 and 500, used for body, nav, forms
-- Load both via `next/font/google` in `src/app/layout.tsx`
-- Tailwind config: extend fontFamily with `display: ['var(--font-zilla)']` and `sans: ['var(--font-inter)']`
-- Default body uses `sans`, h1-h4 use `display` via Tailwind classes
+## Typography (BMLG official, via Adobe Fonts)
+- Display: Powell, font-family "powell", sans-serif. Loaded via Adobe Fonts kit https://use.typekit.net/sas4nlb.css. Only Regular weight (400) and Regular Italic available.
+- Body: Minion Pro, font-family "minion-pro", serif. Loaded via the same kit. Weights 400, 400 italic, 700, 700 italic.
+- Hierarchy comes from size, not weight (per Adobe Fonts kit limitations and per BMLG brand guide which specifies Regular weight)
+- Adobe Fonts kit hosted on BMLG's Adobe account, embed code provided by BMLG creative team
+- Tailwind config: fontFamily display maps to "powell", sans maps to "minion-pro"
+- Default body uses `sans` (Minion Pro), h1-h4 use `display` (Powell) via Tailwind classes
+- FOUT: Adobe Fonts loads asynchronously with default font-display behavior. Can be addressed in performance audit if needed.
 
 ## Tone of Voice Rules
 - Short declarative sentences
@@ -68,7 +70,6 @@ Pages:
 - `/tour` (Tour, Bandsintown widget)
 - `/music` (Music, GMCB prominent + back catalog)
 - `/videos` (24-video YouTube grid, note: rename from /video on old site)
-- `/about` (Bio)
 
 External links:
 - Merch: https://aaronlewismerch.myshopify.com/
@@ -76,7 +77,7 @@ External links:
 
 ## Header
 - Script "Aaron Lewis" logotype on the left, links home
-- Nav right: Home, Tour, Music, Videos, About, Merch (external, with small external arrow), The Hill Shop (external, with small external arrow)
+- Nav right: Home, Tour, Music, Videos, Merch (external, with small external arrow), The Hill Shop (external, with small external arrow)
 - Pre-save CTA button far right (uses CAMPAIGN_STATE to render correct copy)
 - Mobile: hamburger drawer, full-screen overlay, black bg, bone text
 
@@ -161,31 +162,17 @@ Sections in order:
   23. Aaron Lewis - Intro (Acoustic) Live - https://www.youtube.com/watch?v=HyufE80cJ8U
   24. Aaron Lewis - Country Boy (Official Video) - https://www.youtube.com/watch?v=vsQzw_Ax8Cw
 
-### About
-- Heading: "About"
-- Placeholder bio copy (PENDING BMLG APPROVAL):
-
-> Aaron Lewis first came to prominence as the frontman of Staind, the multi-platinum rock band whose raw intensity defined a generation of hard rock. With seven studio albums and over 15 million records sold worldwide, Staind cemented Lewis as one of the most recognizable voices in modern rock.
->
-> In 2011, Lewis stepped into the country world with *Town Line*, an EP that arrived with the quiet confidence of someone who had been listening to outlaw country longer than he had been playing arenas. The transition was no gimmick. It was a homecoming. His debut solo album *The Road* followed in 2012, and a string of records, *Sinner* (2016), *State I'm In* (2019), and *The Hill* (2023), built a solo catalog rooted in plainspoken storytelling and traditional country instrumentation.
->
-> Lewis signed with Big Machine Label Group, bringing his unfiltered perspective to one of Nashville's most prominent homes. His writing has never chased trends. He sings about what he sees, what he remembers, and what he refuses to let go of.
->
-> His new album, *Give My Country Back*, arrives July 10, 2026. It is the next chapter.
-
-- Placeholder portrait image slot
-- Bio copy is placeholder pending BMLG approval (see Placeholder Log)
 
 ## Image Assets
-Files currently in `/public/images`:
-- `AaronLewis_Hero.jpg` (home hero, desktop)
-- `AaronLewis_Hero_Mobile.jpg` (home hero, mobile)
+Files currently in `/public/images/`:
+- `heros/AaronLewis_GiveMeBackMyCountry_HeroDesktop.jpg` (home hero, desktop)
+- `heros/AaronLewis_GiveMeBackMyCountry_HeroMobile.jpg` (home hero, mobile)
 - `AaronLewis_AlbumCover_Vertical.jpg` (home album feature, music page hero)
 - `AaronLewis_Image.jpeg` (about page portrait)
 - `AaronLewis_Image2.jpg` (held, not currently placed)
 
 Pending from BMLG:
-- Dedicated 1200x630 Open Graph image (currently using AaronLewis_Hero.jpg as fallback)
+- Dedicated 1200x630 Open Graph image (currently using HeroDesktop as fallback)
 - Additional press photography for future use
 - Album artwork for back catalog discography (currently text placeholders)
 

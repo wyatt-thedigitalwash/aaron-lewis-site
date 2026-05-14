@@ -1,13 +1,13 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #0A0A0A;
-  --bg-elevated: #141414;
-  --ink: #BCB4A6;
-  --ink-muted: #8A8275;
-  --accent: #A02B28;
-  --accent-hover: #872422;
-  --rule: #2A2620;
+  --bg: #0E0E0E;
+  --bg-elevated: #181818;
+  --ink: #BCB2A5;
+  --ink-muted: #7A7165;
+  --accent: #B63D35;
+  --accent-hover: #993229;
+  --rule: #2A2622;
 }
 
 @theme inline {
@@ -18,13 +18,52 @@
   --color-accent: var(--accent);
   --color-accent-hover: var(--accent-hover);
   --color-rule: var(--rule);
-  --font-sans: var(--font-inter);
-  --font-display: var(--font-zilla), serif;
+  --font-sans: "minion-pro", serif;
+  --font-display: "powell", sans-serif;
 }
 
 body {
   background: var(--bg);
   color: var(--ink);
+}
+
+/* Discography coverflow carousel — responsive sizing */
+.carousel-coverflow {
+  --slide-w: 65vw;
+  --inner-offset: 50vw;
+  --outer-offset: 100vw;
+  --carousel-h: calc(65vw + 80px);
+  max-width: 100%;
+}
+
+@media (min-width: 768px) {
+  .carousel-coverflow {
+    --slide-w: 240px;
+    --inner-offset: 200px;
+    --outer-offset: 360px;
+    --carousel-h: 320px;
+    max-width: 800px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .carousel-coverflow {
+    --slide-w: 280px;
+    --inner-offset: 240px;
+    --outer-offset: 420px;
+    --carousel-h: 360px;
+    max-width: 960px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .carousel-coverflow {
+    --slide-w: 360px;
+    --inner-offset: 300px;
+    --outer-offset: 520px;
+    --carousel-h: 440px;
+    max-width: 1280px;
+  }
 }
 
 ::selection {
@@ -98,11 +137,6 @@ section[data-bg="accent"] + section[data-bg="accent"] {
     display: none !important;
   }
 
-  /* Hide inline track buttons within events */
-  .bit-track-button {
-    display: none !important;
-  }
-
   /* Event row */
   .bit-event {
     border-top: none !important;
@@ -113,7 +147,7 @@ section[data-bg="accent"] + section[data-bg="accent"] {
   /* Date column */
   .bit-date {
     min-width: 110px !important;
-    font-family: var(--font-inter), system-ui, sans-serif !important;
+    font-family: "minion-pro", serif !important;
     font-weight: 500 !important;
     color: var(--ink) !important;
   }
@@ -124,7 +158,7 @@ section[data-bg="accent"] + section[data-bg="accent"] {
   .bit-titleWrapper,
   .bit-titleWrapper a {
     color: var(--ink) !important;
-    font-family: var(--font-inter), system-ui, sans-serif !important;
+    font-family: "minion-pro", serif !important;
     text-decoration: none !important;
   }
 
@@ -136,7 +170,7 @@ section[data-bg="accent"] + section[data-bg="accent"] {
   /* City / location */
   .bit-location {
     color: var(--ink-muted) !important;
-    font-family: var(--font-inter), system-ui, sans-serif !important;
+    font-family: "minion-pro", serif !important;
     font-weight: 400 !important;
   }
 
@@ -144,7 +178,7 @@ section[data-bg="accent"] + section[data-bg="accent"] {
   .bit-rsvp,
   .bit-offers,
   .bit-button {
-    font-family: var(--font-inter), system-ui, sans-serif !important;
+    font-family: "minion-pro", serif !important;
     font-weight: 500 !important;
     cursor: pointer !important;
     box-sizing: border-box !important;
@@ -166,47 +200,104 @@ section[data-bg="accent"] + section[data-bg="accent"] {
   }
 }
 
-/* Bandsintown DESKTOP button overrides — text-link style */
+/* Bandsintown DESKTOP button overrides */
 @media (min-width: 768px) {
   [role="region"][aria-label="Tour Dates"] {
 
-    /* Hide RSVP on desktop */
+    /* Show RSVP on desktop */
     .bit-rsvp-container,
     .bit-rsvp {
-      display: none !important;
+      display: flex !important;
     }
 
-    /* Text-link style for Tickets */
-    .bit-offers,
-    .bit-button {
+    /* RSVP: ghost outlined, narrower than Tickets.
+       Triple-nested selector to beat widget inline styles. */
+    .bit-rsvp-container .bit-rsvp,
+    .bit-event .bit-rsvp-container .bit-rsvp,
+    .bit-rsvp {
       background: transparent !important;
-      border: none !important;
-      color: var(--accent) !important;
-      font-size: 14px !important;
-      letter-spacing: 0.01em !important;
-      padding: 0 !important;
+      background-color: transparent !important;
+      border: 1px solid var(--ink) !important;
+      color: var(--ink) !important;
+      font-size: 13px !important;
+      letter-spacing: 0.04em !important;
+      text-transform: uppercase !important;
+      padding: 8px 14px !important;
       height: auto !important;
       min-height: unset !important;
-      line-height: 1 !important;
+      line-height: 1.2 !important;
+      border-radius: 2px !important;
+      text-align: center !important;
+      justify-content: center !important;
+      transition: background-color 0.2s, color 0.2s !important;
+    }
+
+    .bit-rsvp-container .bit-rsvp:hover,
+    .bit-event .bit-rsvp-container .bit-rsvp:hover,
+    .bit-rsvp:hover {
+      background: var(--ink) !important;
+      background-color: var(--ink) !important;
+      color: var(--bg) !important;
+    }
+
+    /* RSVP container — prevent widget bg from showing through */
+    .bit-rsvp-container {
+      background: transparent !important;
+      background-color: transparent !important;
+      border: none !important;
       border-radius: 0 !important;
-      transition: color 0.15s !important;
-      text-transform: none !important;
+    }
+
+    /* Tickets: accent solid button */
+    .bit-offers,
+    .bit-button {
+      background: var(--accent) !important;
+      border: 1px solid var(--accent) !important;
+      color: var(--ink) !important;
+      font-size: 13px !important;
+      letter-spacing: 0.04em !important;
+      text-transform: uppercase !important;
+      padding: 8px 24px !important;
+      height: auto !important;
+      min-height: unset !important;
+      line-height: 1.2 !important;
+      border-radius: 2px !important;
+      text-align: center !important;
+      justify-content: center !important;
+      transition: background-color 0.2s !important;
     }
 
     .bit-offers:hover,
     .bit-button:hover {
-      color: var(--accent-hover) !important;
+      background: var(--accent-hover) !important;
+      border-color: var(--accent-hover) !important;
     }
 
-    /* Append arrow after Tickets text */
+    /* Remove the appended arrow */
     .bit-offers::after {
-      content: " \2197" !important;
-      font-size: 12px !important;
+      content: none !important;
     }
 
     .bit-event-buttons {
       flex-direction: row !important;
-      gap: 0 !important;
+      gap: 8px !important;
+      align-items: center !important;
+    }
+
+    /* Track button (share/social) — ghost icon style */
+    .bit-track-button {
+      background: transparent !important;
+      border: 1px solid var(--rule) !important;
+      color: var(--ink-muted) !important;
+      border-radius: 2px !important;
+      padding: 6px 10px !important;
+      transition: color 0.2s, border-color 0.2s !important;
+      cursor: pointer !important;
+    }
+
+    .bit-track-button:hover {
+      color: var(--ink) !important;
+      border-color: var(--ink) !important;
     }
   }
 }
