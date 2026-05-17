@@ -5,6 +5,7 @@
 import type { Metadata } from "next";
 import Script from "next/script";
 import { EmailSignup } from "@/components/site/EmailSignup";
+import { FadeIn } from "@/components/site/FadeIn";
 
 export const metadata: Metadata = {
   title: "Tour",
@@ -58,12 +59,12 @@ function BandsintownWidget() {
 export default function TourPage() {
   return (
     <>
-      <PageHeader />
-      <BandsintownWidget />
-      <EmailSignup
+      <FadeIn direction="none" duration={400}><PageHeader /></FadeIn>
+      <FadeIn><BandsintownWidget /></FadeIn>
+      <FadeIn><EmailSignup
         heading="Get tour announcements first."
         subhead="Sign up below to be the first to know when new dates are announced."
-      />
+      /></FadeIn>
     </>
   );
 }

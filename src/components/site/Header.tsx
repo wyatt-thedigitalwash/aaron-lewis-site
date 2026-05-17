@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 import { Menu, X, ArrowUpRight } from "lucide-react";
 
 import { SocialIcons } from "./SocialIcons";
-import { PRESAVE_URL, availabilityCopy } from "@/lib/campaign";
+import { ALBUM_TITLE, PRESAVE_URL, ctaCopy, availabilityCopy } from "@/lib/campaign";
 
 const NAV_ITEMS = [
   { label: "Home", href: "/" },
@@ -18,7 +18,6 @@ const NAV_ITEMS = [
 
 const EXTERNAL_NAV = [
   { label: "Merch", href: "https://aaronlewismerch.myshopify.com/" },
-  { label: "The Hill Shop", href: "https://shop.aaronlewismusic.com/" },
 ];
 
 function NavLink({
@@ -73,6 +72,7 @@ function ExternalNavLink({
 
 export function Header() {
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
 
   const toggleButtonRef = useRef<HTMLButtonElement>(null);
@@ -98,14 +98,12 @@ export function Header() {
     };
   }, [drawerOpen]);
 
-  // Focus first nav link when drawer opens, return focus when it closes
+  // Focus first nav link when drawer opens
   useEffect(() => {
     if (drawerOpen) {
       requestAnimationFrame(() => {
         firstLinkRef.current?.focus();
       });
-    } else {
-      toggleButtonRef.current?.focus();
     }
   }, [drawerOpen]);
 
@@ -126,13 +124,39 @@ export function Header() {
     return () => document.removeEventListener("keydown", onKeyDown);
   }, [drawerOpen, closeDrawer]);
 
+  // Scroll-based header background — debounced to avoid unnecessary re-renders
+  const scrolledRef = useRef(false);
+  useEffect(() => {
+    let rafId = 0;
+    const onScroll = () => {
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        const isScrolled = window.scrollY > 50;
+        if (isScrolled !== scrolledRef.current) {
+          scrolledRef.current = isScrolled;
+          setScrolled(isScrolled);
+        }
+      });
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(rafId);
+    };
+  }, []);
+
   const allNavItems = [
     ...NAV_ITEMS.map((item) => ({ ...item, external: false })),
     ...EXTERNAL_NAV.map((item) => ({ ...item, external: true })),
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-rule bg-bg">
+    <header
+      className={`sticky top-0 z-50 w-full border-b bg-bg transition-colors duration-300 ${
+        scrolled ? "border-rule" : "border-transparent"
+      }`}
+    >
       {/* Desktop: three-column grid */}
       <div className="relative mx-auto hidden h-[80px] max-w-[1920px] items-center justify-between px-6 md:px-8 lg:flex lg:px-12">
         {/* Left: wordmark */}
@@ -233,10 +257,6 @@ export function Header() {
                 aria-label={`${item.label} (opens in new tab)`}
                 onClick={closeDrawer}
                 className="flex items-center gap-1 font-display text-3xl font-normal text-ink-muted transition-colors hover:text-ink"
-                style={{
-                  opacity: drawerOpen ? 1 : 0,
-                  transition: `opacity 200ms ease-out ${i * 30}ms`,
-                }}
               >
                 {item.label}
                 <ArrowUpRight size={20} />
@@ -246,16 +266,11 @@ export function Header() {
                 key={item.href}
                 ref={i === 0 ? (firstLinkRef as React.Ref<HTMLAnchorElement>) : undefined}
                 href={item.href}
-                onClick={closeDrawer}
                 className={`font-display text-3xl font-normal transition-colors ${
                   pathname === item.href
                     ? "text-ink"
                     : "text-ink-muted hover:text-ink"
                 }`}
-                style={{
-                  opacity: drawerOpen ? 1 : 0,
-                  transition: `opacity 200ms ease-out ${i * 30}ms`,
-                }}
               >
                 {item.label}
               </Link>
@@ -268,37 +283,6 @@ export function Header() {
             className="mt-8 flex gap-6"
           />
 
-          {/* Pre-save campaign block — fills remaining space */}
-          <a
-            href={PRESAVE_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Pre-save Give My Country Back (opens in new tab)"
-            onClick={closeDrawer}
-            className="relative mt-auto block w-full flex-1 min-h-0 overflow-hidden transition-opacity duration-200 hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-          >
-            {/* Background image */}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/images/hamburger/AaronLewis_HamburgerImage.jpg"
-              alt=""
-              className="absolute inset-0 h-full w-full object-cover object-center"
-            />
-            {/* Dark overlay */}
-            <div className="absolute inset-0 bg-bg/50" />
-            {/* Content */}
-            <div className="absolute inset-0 flex flex-col items-center justify-center">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/branding/ArrowLewis_GiveMyCountryBack_LogoText.png"
-                alt=""
-                className="h-auto w-full max-w-[260px]"
-              />
-              <p className="mt-4 text-center text-xl text-ink">
-                {availabilityCopy()}
-              </p>
-            </div>
-          </a>
         </nav>
       </div>
     </header>

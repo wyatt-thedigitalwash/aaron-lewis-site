@@ -1,6 +1,15 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: 'Clarendon';
+  src: url('/fonts/CLRNDNL.TTF') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
+  --nav-h: 61px; /* 60px inner + 1px border-b */
   --bg: #0E0E0E;
   --bg-elevated: #181818;
   --ink: #BCB2A5;
@@ -8,6 +17,10 @@
   --accent: #B63D35;
   --accent-hover: #993229;
   --rule: #2A2622;
+}
+
+@media (min-width: 1024px) {
+  :root { --nav-h: 81px; } /* 80px inner + 1px border-b */
 }
 
 @theme inline {
@@ -25,6 +38,44 @@
 body {
   background: var(--bg);
   color: var(--ink);
+}
+
+/* Override browser autofill styles */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--ink);
+  -webkit-box-shadow: 0 0 0 1000px var(--bg-elevated) inset;
+  box-shadow: 0 0 0 1000px var(--bg-elevated) inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Action row panel hover — only activate transition on hover, not permanently */
+@media (hover: hover) {
+  .action-panel:hover .action-panel-bg {
+    transform: scale(1.05);
+    transition: transform 500ms ease-out;
+  }
+  .action-panel:hover .action-panel-gradient {
+    background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.75) 40%, rgba(0,0,0,0.35) 70%, rgba(0,0,0,0.2) 100%) !important;
+  }
+  .action-panel:hover .action-panel-cta {
+    color: white;
+    transition: color 300ms ease;
+  }
+}
+
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 /* Discography coverflow carousel — responsive sizing */
@@ -253,7 +304,8 @@ section[data-bg="accent"] + section[data-bg="accent"] {
     .bit-button {
       background: var(--accent) !important;
       border: 1px solid var(--accent) !important;
-      color: var(--ink) !important;
+      color: #FFFFFF !important;
+      font-weight: 700 !important;
       font-size: 13px !important;
       letter-spacing: 0.04em !important;
       text-transform: uppercase !important;
@@ -395,7 +447,8 @@ section[data-bg="accent"] + section[data-bg="accent"] {
     .bit-offers {
       background: var(--accent) !important;
       border: 1px solid var(--accent) !important;
-      color: var(--ink) !important;
+      color: #FFFFFF !important;
+      font-weight: 700 !important;
     }
 
     .bit-offers:hover {

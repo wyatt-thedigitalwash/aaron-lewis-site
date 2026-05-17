@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { VideoCard } from "@/components/site/VideoCard";
 import { EmailSignup } from "@/components/site/EmailSignup";
+import { FadeIn } from "@/components/site/FadeIn";
 
 export const metadata: Metadata = {
   title: "Videos",
@@ -39,31 +40,35 @@ export default function VideosPage() {
   return (
     <>
       {/* Page header */}
-      <section className="bg-bg px-6 pb-8 pt-24 md:px-8 lg:pb-12 lg:pt-32">
-        <div className="mx-auto max-w-7xl">
-          <h1 className="font-display text-6xl font-normal leading-none text-ink lg:text-7xl">
-            Videos
-          </h1>
-          <p className="mt-6 max-w-xl text-lg text-ink">
-            Music videos, lyric videos, and live performances. New ones drop
-            here first.
-          </p>
-        </div>
-      </section>
+      <FadeIn direction="none" duration={400}>
+        <section className="bg-bg px-6 pb-8 pt-24 md:px-8 lg:pb-12 lg:pt-32">
+          <div className="mx-auto max-w-7xl">
+            <h1 className="font-display text-6xl font-normal leading-none text-ink lg:text-7xl">
+              Videos
+            </h1>
+            <p className="mt-6 max-w-xl text-lg text-ink">
+              Music videos, lyric videos, and live performances. New ones drop
+              here first.
+            </p>
+          </div>
+        </section>
+      </FadeIn>
 
       {/* Video grid */}
-      <section className="bg-bg px-6 pb-20 md:px-8 lg:pb-32">
-        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-x-6 gap-y-12 md:grid-cols-2 lg:grid-cols-3">
-          {VIDEOS.map((video) => (
-            <VideoCard
-              key={video.videoId}
-              title={video.title}
-              videoId={video.videoId}
-            />
-          ))}
-        </div>
-      </section>
-      <EmailSignup />
+      <FadeIn>
+        <section className="bg-bg px-6 pb-20 md:px-8 lg:pb-32">
+          <div className="mx-auto grid max-w-7xl grid-cols-1 gap-x-6 gap-y-12 md:grid-cols-2 lg:grid-cols-3">
+            {VIDEOS.map((video) => (
+              <VideoCard
+                key={video.videoId}
+                title={video.title}
+                videoId={video.videoId}
+              />
+            ))}
+          </div>
+        </section>
+      </FadeIn>
+      <FadeIn><EmailSignup /></FadeIn>
     </>
   );
 }

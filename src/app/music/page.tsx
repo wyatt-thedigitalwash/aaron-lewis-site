@@ -13,6 +13,7 @@ import {
   availabilityCopy,
 } from "@/lib/campaign";
 import { EmailSignup } from "@/components/site/EmailSignup";
+import { FadeIn } from "@/components/site/FadeIn";
 import { DiscographyCarousel } from "@/components/site/DiscographyCarousel";
 import type { Album } from "@/components/site/DiscographyCarousel";
 
@@ -39,7 +40,7 @@ function FeaturedHero() {
         {/* Album art — full height left half */}
         <div className="relative aspect-square lg:aspect-auto">
           <Image
-            src="/album_art/AaronLewis_GiveMyCountryBack.jpg"
+            src="/album_art/AarowLewis_GiveMyCountryBack_AlbumCover.jpg"
             alt="Aaron Lewis Give My Country Back album cover"
             fill
             priority
@@ -82,11 +83,30 @@ function FeaturedHero() {
 }
 
 
+function Tracklist() {
+  return (
+    <section className="bg-bg">
+      <div className="mx-auto max-w-5xl px-6 py-20 md:px-8 lg:py-32">
+        <h2 className="mb-10 font-display text-5xl font-normal text-accent lg:text-6xl">
+          Tracklist
+        </h2>
+        <Image
+          src="/misc/AaronLewis_Tracklist.jpg"
+          alt="Give My Country Back tracklist"
+          width={1200}
+          height={1600}
+          className="w-full"
+        />
+      </div>
+    </section>
+  );
+}
+
 function Discography() {
   return (
     <section
-      data-bg="elevated"
-      className="bg-elevated px-6 py-20 md:px-8 lg:py-24"
+      data-bg="dark"
+      className="bg-bg px-6 py-20 md:px-8 lg:py-24"
     >
       <div className="mx-auto max-w-7xl">
         <h2 className="mb-16 font-display text-5xl font-normal text-accent lg:text-6xl">
@@ -102,8 +122,9 @@ export default function MusicPage() {
   return (
     <>
       <FeaturedHero />
-      <Discography />
-      <EmailSignup />
+      <FadeIn><Tracklist /></FadeIn>
+      <FadeIn><Discography /></FadeIn>
+      <FadeIn><EmailSignup /></FadeIn>
     </>
   );
 }
