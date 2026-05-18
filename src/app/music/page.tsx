@@ -20,7 +20,7 @@ import type { Album } from "@/components/site/DiscographyCarousel";
 export const metadata: Metadata = {
   title: "Music",
   description:
-    "The music of Aaron Lewis. New album Give My Country Back available July 10.",
+    "The music of Aaron Lewis. New album Give My Country Back available July 17.",
 };
 
 // Verify the back catalog list with BMLG (5 titles based on public discography).
@@ -38,13 +38,13 @@ function FeaturedHero() {
     <section className="bg-bg lg:h-[calc(100dvh-80px)]">
       <div className="grid lg:grid-cols-2 lg:h-full">
         {/* Album art — full height left half */}
-        <div className="relative aspect-square lg:aspect-auto">
+        <div className="relative aspect-square bg-bg lg:aspect-auto">
           <Image
             src="/album_art/AarowLewis_GiveMyCountryBack_AlbumCover.jpg"
             alt="Aaron Lewis Give My Country Back album cover"
             fill
             priority
-            className="object-cover object-center"
+            className="object-contain object-center"
           />
         </div>
 
@@ -83,20 +83,42 @@ function FeaturedHero() {
 }
 
 
+const TRACKLIST = [
+  { num: 1, title: "The Door", duration: "3:28" },
+  { num: 2, title: "Bad Thing To Be Good At", duration: "4:25" },
+  { num: 3, title: "Too High For This", duration: "3:20" },
+  { num: 4, title: "List Of Things To Quit", duration: "3:22" },
+  { num: 5, title: "Give My Country Back", duration: "3:00" },
+  { num: 6, title: "People I've Known", duration: "4:20" },
+  { num: 7, title: "Let Go Like The Rain", duration: "3:18" },
+  { num: 8, title: "A Showman's Life", duration: "4:41" },
+  { num: 9, title: "Keeping Up With The Jonesin'", duration: "3:24" },
+  { num: 10, title: "Duct Tape And Bailing Wire", duration: "5:52" },
+];
+
 function Tracklist() {
   return (
-    <section className="bg-bg">
-      <div className="mx-auto max-w-5xl px-6 py-20 md:px-8 lg:py-32">
+    <section id="tracklist" className="bg-bg px-6 py-20 md:px-8 lg:py-32">
+      <div className="mx-auto max-w-3xl">
         <h2 className="mb-10 font-display text-5xl font-normal text-accent lg:text-6xl">
           Tracklist
         </h2>
-        <Image
-          src="/misc/AaronLewis_Tracklist.jpg"
-          alt="Give My Country Back tracklist"
-          width={1200}
-          height={1600}
-          className="w-full"
-        />
+        <div>
+          {TRACKLIST.map((track) => (
+            <div
+              key={track.num}
+              className="flex items-center border-b border-rule py-4"
+            >
+              <span className="w-10 shrink-0 text-sm font-medium text-ink-muted">
+                {String(track.num).padStart(2, "0")}
+              </span>
+              <span className="text-base text-ink">{track.title}</span>
+              <span className="ml-auto text-sm text-ink-muted">
+                {track.duration}
+              </span>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

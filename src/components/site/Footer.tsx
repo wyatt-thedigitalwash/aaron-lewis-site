@@ -12,15 +12,7 @@ function FooterCopyright() {
       <div className="mx-auto flex max-w-5xl flex-col items-center gap-4">
         {/* Copyright */}
         <p className="text-xs text-ink-muted">
-          &copy; 2026{" "}
-          <a
-            href="https://www.bigmachinelabelgroup.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-ink"
-          >
-            Big Machine Label Group
-          </a>
+          &copy; Borchetta Entertainment Group, LLC d/b/a Big Machine Records.
         </p>
 
         {/* Legal links */}

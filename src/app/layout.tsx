@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { Tracking } from "@/components/site/Tracking";
+import { SplashGate } from "@/components/site/SplashGate";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
     template: "%s | Aaron Lewis",
   },
   description:
-    "The official site of Aaron Lewis. New album available July 10.",
+    "The official site of Aaron Lewis. New album available July 17.",
   icons: {
     icon: "/favicon.jpg",
   },
@@ -25,7 +26,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Aaron Lewis",
     description:
-      "The official site of Aaron Lewis. New album available July 10.",
+      "The official site of Aaron Lewis. New album available July 17.",
     images: ["/open-graph.jpg"],
     type: "website",
   },
@@ -47,6 +48,9 @@ export default function RootLayout({
         <link rel="stylesheet" href="https://use.typekit.net/sas4nlb.css" />
         <meta name="robots" content="noimageai" />
         <meta name="robots" content="noai" />
+        {process.env.STAGING_PASSWORD && (
+          <meta name="robots" content="noindex, nofollow" />
+        )}
       </head>
       <body className="min-h-full flex flex-col">
         <Tracking />
@@ -57,10 +61,20 @@ export default function RootLayout({
             width="0"
             style={{ display: "none", visibility: "hidden" }}
           />
+          {/* Meta Pixel noscript fallback */}
+          <img
+            height="1"
+            width="1"
+            style={{ display: "none" }}
+            src="https://www.facebook.com/tr?id=1858545644702596&ev=PageView&noscript=1"
+            alt=""
+          />
         </noscript>
-        <Header />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        <SplashGate>
+          <Header />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </SplashGate>
       </body>
     </html>
   );

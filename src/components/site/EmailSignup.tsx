@@ -25,6 +25,7 @@ export function EmailSignup({
     const lastName = (data.get("lastName") as string).trim();
     const email = (data.get("email") as string).trim();
     const zipCode = (data.get("zip") as string).trim();
+    const phone = (data.get("phone") as string).trim();
     const country = (data.get("country") as string).trim();
 
     // Client-side validation
@@ -46,7 +47,7 @@ export function EmailSignup({
       const res = await fetch("/api/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, firstName, lastName, zipCode, country }),
+        body: JSON.stringify({ email, firstName, lastName, zipCode, phone, country }),
       });
 
       const json = await res.json();
@@ -148,8 +149,8 @@ export function EmailSignup({
                 </div>
               </div>
 
-              {/* Row 2: Zip, Country, Button */}
-              <div className="mt-6 grid items-end gap-6 lg:mt-8 lg:grid-cols-4 lg:gap-8">
+              {/* Row 2: Zip, Phone, Country */}
+              <div className="mt-6 grid gap-6 lg:mt-8 lg:grid-cols-3 lg:gap-8">
                 <div>
                   <label htmlFor="zip" className="mb-2 block text-xs font-medium uppercase tracking-[0.15em] text-ink-muted">
                     Zip Code
@@ -162,7 +163,19 @@ export function EmailSignup({
                   />
                 </div>
 
-                <div className="lg:col-span-2">
+                <div>
+                  <label htmlFor="phone" className="mb-2 block text-xs font-medium uppercase tracking-[0.15em] text-ink-muted">
+                    Phone Number
+                  </label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    className="w-full border-0 border-b border-ink-muted/40 bg-transparent px-0 py-2 text-base text-ink transition-colors hover:border-ink/60 focus:border-accent focus:outline-none"
+                  />
+                </div>
+
+                <div>
                   <label htmlFor="country" className="mb-2 block text-xs font-medium uppercase tracking-[0.15em] text-ink-muted">
                     Country
                   </label>
@@ -188,17 +201,18 @@ export function EmailSignup({
                     />
                   </div>
                 </div>
+              </div>
 
-                <div className="flex items-end">
-                  <button
-                    type="submit"
-                    disabled={status === "loading"}
-                    className="flex w-full items-center justify-center gap-2 rounded-[2px] border border-ink bg-transparent px-8 py-3 text-sm font-medium uppercase tracking-wide text-ink transition-colors hover:border-accent hover:bg-accent hover:text-ink disabled:opacity-50 lg:w-auto"
-                  >
-                    {status === "loading" ? "Submitting..." : "Sign Up"}
-                    {status !== "loading" && <ArrowRight size={16} />}
-                  </button>
-                </div>
+              {/* Row 3: Button */}
+              <div className="mt-6 flex lg:mt-8 lg:justify-end">
+                <button
+                  type="submit"
+                  disabled={status === "loading"}
+                  className="flex w-full items-center justify-center gap-2 rounded-[2px] border border-ink bg-transparent px-8 py-3 text-sm font-medium uppercase tracking-wide text-ink transition-colors hover:border-accent hover:bg-accent hover:text-ink disabled:opacity-50 lg:w-auto"
+                >
+                  {status === "loading" ? "Submitting..." : "Sign Up"}
+                  {status !== "loading" && <ArrowRight size={16} />}
+                </button>
               </div>
 
               {/* Error message */}

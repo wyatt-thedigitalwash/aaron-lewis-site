@@ -1,0 +1,48 @@
+"use client";
+
+import { createContext, useCallback, useContext, useEffect, useState } from "react";
+import { SplashPage } from "./SplashPage";
+
+const SplashContext = createContext({
+  active: false,
+  closing: false,
+  dismiss: () => {},
+});
+
+export function useSplash() {
+  return useContext(SplashContext);
+}
+
+export function SplashGate({ children }: { children: React.ReactNode }) {
+  const [state, setState] = useState<"loading" | "splash" | "closing" | "site">("loading");
+
+  useEffect(() => {
+    const alreadyDismissed = sessionStorage.getItem("splash_dismissed") === "true";
+    setState(alreadyDismissed ? "site" : "splash");
+  }, []);
+
+  const dismiss = useCallback(() => {
+    sessionStorage.setItem("splash_dismissed", "true");
+    setState("closing");
+    setTimeout(() => setState("site"), 500);
+  }, []);
+
+  const splashActive = state === "loading" || state === "splash" || state === "closing";
+  const showSplash = state === "splash" || state === "closing";
+
+  return (
+    <SplashContext.Provider value={{ active: splashActive, closing: state === "closing", dismiss }}>
+      <div
+        style={{
+          opacity: splashActive ? 0 : 1,
+          pointerEvents: splashActive ? "none" : "auto",
+          transition: state === "loading" ? "none" : "opacity 500ms ease",
+        }}
+      >
+        {children}
+      </div>
+
+      {showSplash && <SplashPage />}
+    </SplashContext.Provider>
+  );
+}

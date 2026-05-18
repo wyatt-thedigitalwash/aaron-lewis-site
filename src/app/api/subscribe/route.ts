@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
-  const { email, firstName, lastName, zipCode, country } = await request.json();
+  const { email, firstName, lastName, zipCode, phone, country } = await request.json();
 
   if (!email) {
     return NextResponse.json(
@@ -38,6 +38,7 @@ export async function POST(request: Request) {
             FNAME: firstName || "",
             LNAME: lastName || "",
             MMERGE14: zipCode || "",
+            PHONE: phone || "",
             MMERGE12: country || "",
             MMERGE9: "aaronlewismusic.com",
           },

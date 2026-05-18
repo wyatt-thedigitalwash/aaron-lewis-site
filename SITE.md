@@ -93,7 +93,7 @@ External links:
 
 ### Footer Copyright Section
 - Social icon row: Facebook, Instagram, X, Spotify, Apple Music, Amazon Music, Pandora, YouTube
-- "© 2026 Big Machine Label Group" with link to https://www.bigmachinelabelgroup.com/
+- "2026 Big Machine Records" with link to https://www.bigmachinelabelgroup.com/
 - Legal links: Privacy (https://www.bigmachinelabelgroup.com/privacy-notice/), Terms & Conditions (https://www.bigmachinelabelgroup.com/terms/), Do Not Sell My Personal Information (https://www.bigmachinelabelgroup.com/privacy-notice/)
 
 ### Social URLs

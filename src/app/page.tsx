@@ -11,14 +11,13 @@ import {
 } from "@/lib/campaign";
 import { EmailSignup } from "@/components/site/EmailSignup";
 import { FadeIn } from "@/components/site/FadeIn";
-import { SingleReleasePopup } from "@/components/site/SingleReleasePopup";
 import { HeroSlider } from "@/components/site/HeroSlider";
 import { ActionRow } from "@/components/site/ActionRow";
 
 export const metadata: Metadata = {
   title: "Home",
   description:
-    "The official site of Aaron Lewis. New album available July 10.",
+    "The official site of Aaron Lewis. New album available July 17.",
 };
 
 const PREVIEW_VIDEOS = [
@@ -238,7 +237,6 @@ export default function Home() {
       <TourPreview />
       <VideoPreview />
       <EmailSignup />
-      <SingleReleasePopup />
     </>
   );
 }

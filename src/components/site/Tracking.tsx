@@ -38,12 +38,27 @@ export function Tracking() {
         `}
       </Script>
 
-      {/* 4. Google Ads conversion */}
+      {/* 4a. Google Ads conversion (existing) */}
       <Script
         id="google-ads-conversion"
         strategy="lazyOnload"
         src="https://www.googletagmanager.com/gtag/destination?id=AW-659932453&cx=c&gtm=4e65d0"
       />
+
+      {/* 4b. Google Ads gtag (AW-17574370157) */}
+      <Script
+        id="google-ads-new"
+        strategy="afterInteractive"
+        src="https://www.googletagmanager.com/gtag/js?id=AW-17574370157"
+      />
+      <Script id="google-ads-new-config" strategy="afterInteractive">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'AW-17574370157');
+        `}
+      </Script>
 
       {/* 5. GA4 properties */}
       <Script
@@ -82,11 +97,25 @@ export function Tracking() {
           fbq('init', '1610676822579054');
           fbq('init', '327646454344180');
           fbq('init', '223455138793586');
+          fbq('init', '1858545644702596');
           fbq('track', 'PageView');
         `}
       </Script>
 
-      {/* 9. Audigent / Hadron */}
+      {/* 9. TikTok Pixel */}
+      <Script id="tiktok-pixel" strategy="afterInteractive">
+        {`
+          !function (w, d, t) {
+            w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie","holdConsent","revokeConsent","grantConsent"],ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(
+            var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e},ttq.load=function(e,n){var r="https://analytics.tiktok.com/i18n/pixel/events.js",o=n&&n.partner;ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=r,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};n=document.createElement("script");n.type="text/javascript",n.async=!0,n.src=r+"?sdkid="+e+"&lib="+t;e=document.getElementsByTagName("script")[0];e.parentNode.insertBefore(n,e)};
+            ttq.load('D26CTKBC77U110BN94C0');
+            ttq.page();
+          }(window, document, 'ttq');
+        `}
+      </Script>
+
+      {/* 10. Audigent / Hadron */}
+
       <Script
         id="hadron-base"
         strategy="lazyOnload"
@@ -103,7 +132,7 @@ export function Tracking() {
         src="https://p.ad.gt/api/v1/p/139"
       />
 
-      {/* 10. Evidon cookie consent (5 scripts, order matters) */}
+      {/* 11. Evidon cookie consent (5 scripts, order matters) */}
       <Script
         id="evidon-translations"
         strategy="lazyOnload"

@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { ArrowUpRight } from "lucide-react";
 import { PRESAVE_URL, ctaCopy, availabilityCopy } from "@/lib/campaign";
 
 export function HeroSlider() {
@@ -75,10 +74,9 @@ export function HeroSlider() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`${ctaCopy()} (opens in new tab)`}
-              className="inline-flex items-center rounded-[2px] bg-accent px-6 py-3 text-sm font-bold uppercase tracking-wide text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,0.2)] transition-colors hover:bg-accent-hover"
+              className="inline-block rounded-[2px] bg-accent px-6 py-3 text-center text-sm font-bold uppercase tracking-wide text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,0.2)] transition-colors hover:bg-accent-hover"
             >
               {ctaCopy()}
-              <ArrowUpRight size={16} className="ml-2" />
             </a>
           </div>
         </div>
