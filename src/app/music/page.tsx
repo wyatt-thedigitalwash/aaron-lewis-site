@@ -109,11 +109,11 @@ function Tracklist() {
               key={track.num}
               className="flex items-center border-b border-rule py-4"
             >
-              <span className="w-10 shrink-0 text-sm font-medium text-ink-muted">
+              <span className="w-12 shrink-0 text-lg font-medium text-ink-muted">
                 {String(track.num).padStart(2, "0")}
               </span>
-              <span className="text-base text-ink">{track.title}</span>
-              <span className="ml-auto text-sm text-ink-muted">
+              <span className="text-lg text-ink">{track.title}</span>
+              <span className="ml-auto text-base text-ink-muted">
                 {track.duration}
               </span>
             </div>
