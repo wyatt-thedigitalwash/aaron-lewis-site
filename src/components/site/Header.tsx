@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, ArrowUpRight } from "lucide-react";
+import { Menu, X } from "lucide-react";
 
 import { SocialIcons } from "./SocialIcons";
 import { ALBUM_TITLE, PRESAVE_URL, ctaCopy, availabilityCopy } from "@/lib/campaign";
@@ -65,7 +65,6 @@ function ExternalNavLink({
       className="flex items-center gap-0.5 text-[17px] font-medium text-ink-muted transition-colors hover:text-ink"
     >
       {label}
-      <ArrowUpRight size={12} />
     </a>
   );
 }
@@ -259,7 +258,6 @@ export function Header() {
                 className="flex items-center gap-1 font-display text-3xl font-normal text-ink-muted transition-colors hover:text-ink"
               >
                 {item.label}
-                <ArrowUpRight size={20} />
               </a>
             ) : (
               <Link

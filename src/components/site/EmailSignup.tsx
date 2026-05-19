@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowRight, ChevronDown } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { COUNTRIES } from "@/lib/countries";
 
 export function EmailSignup({
@@ -211,7 +211,6 @@ export function EmailSignup({
                   className="flex w-full items-center justify-center gap-2 rounded-[2px] border border-ink bg-transparent px-8 py-3 text-sm font-medium uppercase tracking-wide text-ink transition-colors hover:border-accent hover:bg-accent hover:text-ink disabled:opacity-50 lg:w-auto"
                 >
                   {status === "loading" ? "Submitting..." : "Sign Up"}
-                  {status !== "loading" && <ArrowRight size={16} />}
                 </button>
               </div>
 

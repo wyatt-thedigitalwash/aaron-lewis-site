@@ -82,7 +82,7 @@ export function ActionRow() {
                   </p>
                 )}
                 <p className="action-panel-cta text-base font-semibold text-white/80 md:text-sm">
-                  {cta} &rarr;
+                  {cta}
                 </p>
               </div>
             </a>

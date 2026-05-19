@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import Script from "next/script";
-import { ArrowUpRight, Play } from "lucide-react";
+import { Play } from "lucide-react";
 import {
   ALBUM_TITLE,
   PRESAVE_URL,
@@ -49,7 +49,6 @@ function CtaButton({ className = "" }: { className?: string }) {
       className={`inline-flex items-center gap-2 rounded-[2px] bg-accent px-8 py-3 font-sans text-base font-medium text-ink transition-colors hover:bg-accent-hover ${className}`}
     >
       {ctaCopy()}
-      <ArrowUpRight size={16} />
     </a>
   );
 }
@@ -79,12 +78,10 @@ function SectionHeader({
           className={linkClass}
         >
           {linkLabel}
-          <ArrowUpRight size={14} />
         </a>
       ) : (
         <Link href={linkHref} className={linkClass}>
           {linkLabel}
-          <ArrowUpRight size={14} />
         </Link>
       )}
     </div>
@@ -166,7 +163,6 @@ function TourPreview() {
             className="inline-flex items-center rounded-[2px] border border-ink bg-transparent px-8 py-3 text-sm font-medium uppercase tracking-wide text-ink transition-colors hover:bg-ink hover:text-bg"
           >
             View All Dates
-            <ArrowUpRight size={16} className="ml-2" />
           </Link>
         </div>
       </div>
@@ -221,7 +217,6 @@ function VideoPreview() {
             className="inline-flex items-center rounded-[2px] border border-ink bg-transparent px-8 py-3 text-sm font-medium uppercase tracking-wide text-ink transition-colors hover:bg-ink hover:text-bg"
           >
             View All Videos
-            <ArrowUpRight size={16} className="ml-2" />
           </Link>
         </div>
       </div>
