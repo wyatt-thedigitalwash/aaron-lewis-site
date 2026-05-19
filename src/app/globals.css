@@ -40,6 +40,19 @@ body {
   color: var(--ink);
 }
 
+/* Landing page: hide site chrome */
+body.landing-page > header,
+body.landing-page > footer,
+body.landing-page > div[style*="z-index: 9999"],
+body.landing-page > div[style*="opacity"] > header,
+body.landing-page > div[style*="opacity"] > footer {
+  display: none !important;
+}
+body.landing-page > div[style*="opacity"] {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
 /* Override browser autofill styles */
 input:-webkit-autofill,
 input:-webkit-autofill:hover,

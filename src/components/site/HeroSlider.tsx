@@ -9,9 +9,9 @@ export function HeroSlider() {
         className="absolute inset-y-0 left-0 hidden w-[58%] md:block"
         style={{
           WebkitMaskImage:
-            "linear-gradient(to right, black 0%, black 60%, transparent 100%)",
+            "linear-gradient(to right, black 0%, black 40%, transparent 90%)",
           maskImage:
-            "linear-gradient(to right, black 0%, black 60%, transparent 100%)",
+            "linear-gradient(to right, black 0%, black 40%, transparent 90%)",
         }}
       >
         <Image
@@ -37,7 +37,7 @@ export function HeroSlider() {
         className="absolute inset-x-0 bottom-0 top-[40%] md:hidden"
         style={{
           background:
-            "linear-gradient(to bottom, transparent 0%, rgba(14,14,14,0.7) 60%, rgba(14,14,14,0.92) 100%)",
+            "linear-gradient(to bottom, transparent 0%, rgba(14,14,14,0.7) 60%, rgba(14,14,14,1) 100%)",
         }}
       />
 

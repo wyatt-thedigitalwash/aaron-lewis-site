@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { SplashPage } from "./SplashPage";
 
 const SplashContext = createContext({
@@ -14,12 +15,19 @@ export function useSplash() {
 }
 
 export function SplashGate({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+  const isLanding = pathname.startsWith("/gmcb");
+
   const [state, setState] = useState<"loading" | "splash" | "closing" | "site">("loading");
 
   useEffect(() => {
+    if (isLanding) {
+      setState("site");
+      return;
+    }
     const alreadyDismissed = sessionStorage.getItem("splash_dismissed") === "true";
     setState(alreadyDismissed ? "site" : "splash");
-  }, []);
+  }, [isLanding]);
 
   const dismiss = useCallback(() => {
     sessionStorage.setItem("splash_dismissed", "true");
