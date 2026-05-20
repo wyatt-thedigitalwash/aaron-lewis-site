@@ -80,21 +80,21 @@ function HeroSection() {
 
 const VINYL_CARDS = [
   {
-    image: "/merch/vinyls/TalkShopLive_SilverBlackSwirl.png",
-    title: "Metallic Silver & Black Swirl Vinyl",
-    subtitle: "TalkShopLive Exclusive",
+    image: "/merch/vinyls/CreatiVets_Black.png",
+    title: "Black Vinyl",
+    subtitle: "Veteran-Designed Insert",
+    href: "#",
+  },
+  {
+    image: "/merch/vinyls/D2C_TranslucentRedBlackSwirls.png",
+    title: "Translucent Red & Black Swirls Vinyl",
+    subtitle: "D2C Exclusive",
     href: "#",
   },
   {
     image: "/merch/vinyls/D2C_RedWhiteBlueSplatter.png",
     title: "Red, White & Blue Splatter Vinyl",
     subtitle: "D2C Exclusive",
-    href: "#",
-  },
-  {
-    image: "/merch/vinyls/CreatiVets_Black.png",
-    title: "Black Vinyl",
-    subtitle: "Veteran-Designed Insert",
     href: "#",
   },
 ];

@@ -93,7 +93,7 @@ export function MusicToggle() {
               style={{ boxShadow: shadowStyle("album") }}
             />
             <p
-              className="mt-4 text-[0.65rem] uppercase tracking-[0.2em] text-accent"
+              className="mt-4 text-[0.65rem] font-bold uppercase tracking-[0.2em] text-accent"
               style={btnStyle}
             >
               New Album
@@ -117,7 +117,7 @@ export function MusicToggle() {
               style={{ boxShadow: shadowStyle("single") }}
             />
             <p
-              className="mt-4 text-[0.65rem] uppercase tracking-[0.2em] text-accent"
+              className="mt-4 text-[0.65rem] font-bold uppercase tracking-[0.2em] text-accent"
               style={btnStyle}
             >
               New Single
@@ -141,7 +141,7 @@ export function MusicToggle() {
               style={{ boxShadow: "0 16px 48px rgba(0,0,0,0.5)" }}
             />
             <p
-              className="mt-4 text-[0.65rem] uppercase tracking-[0.2em] text-accent"
+              className="mt-4 text-[0.65rem] font-bold uppercase tracking-[0.2em] text-accent"
               style={btnStyle}
             >
               New Album
@@ -150,7 +150,7 @@ export function MusicToggle() {
               Give My Country Back
             </p>
             <p
-              className="mt-1 text-[0.65rem] uppercase tracking-[0.2em] text-ink-muted"
+              className="mt-1 text-[0.65rem] font-bold uppercase tracking-[0.2em] text-ink-muted"
               style={btnStyle}
             >
               Pre-Save / Pre-Order
@@ -182,7 +182,7 @@ export function MusicToggle() {
               style={{ boxShadow: "0 16px 48px rgba(0,0,0,0.5)" }}
             />
             <p
-              className="mt-4 text-[0.65rem] uppercase tracking-[0.2em] text-accent"
+              className="mt-4 text-[0.65rem] font-bold uppercase tracking-[0.2em] text-accent"
               style={btnStyle}
             >
               New Single
@@ -191,7 +191,7 @@ export function MusicToggle() {
               Give My Country Back
             </p>
             <p
-              className="mt-1 text-[0.65rem] uppercase tracking-[0.2em] text-accent"
+              className="mt-1 text-[0.65rem] font-bold uppercase tracking-[0.2em] text-accent"
               style={btnStyle}
             >
               Out Now
@@ -227,7 +227,7 @@ export function MusicToggle() {
             {selected === "album" && (
               <>
                 <p
-                  className="mb-4 text-[0.65rem] uppercase tracking-[0.2em] text-ink-muted"
+                  className="mb-4 text-[0.65rem] font-bold uppercase tracking-[0.2em] text-ink-muted"
                   style={btnStyle}
                 >
                   Pre-Save / Pre-Order
@@ -266,7 +266,7 @@ export function MusicToggle() {
             {selected === "single" && (
               <>
                 <p
-                  className="mb-4 text-[0.65rem] uppercase tracking-[0.2em] text-accent"
+                  className="mb-4 text-[0.65rem] font-bold uppercase tracking-[0.2em] text-accent"
                   style={btnStyle}
                 >
                   Out Now

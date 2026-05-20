@@ -70,7 +70,7 @@ export function EmailSignup({
     <section data-bg="elevated" className="bg-elevated px-6 py-20 md:px-8 lg:py-32">
       <div className="mx-auto max-w-5xl">
         {/* Eyebrow */}
-        <p className="mb-4 text-xs font-medium uppercase tracking-[0.2em] text-ink-muted">
+        <p className="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-ink-muted">
           Mailing List
         </p>
 
