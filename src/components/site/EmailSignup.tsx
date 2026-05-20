@@ -235,6 +235,24 @@ export function EmailSignup({
           >
             Privacy Policy
           </a>
+          , and Laylo&apos;s{" "}
+          <a
+            href="https://docs.laylo.com/en/articles/6497431-terms-of-service"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-ink-muted underline hover:text-ink"
+          >
+            Terms
+          </a>
+          {" "}and{" "}
+          <a
+            href="https://docs.laylo.com/en/articles/6497219-privacy-and-gdpr-policy"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-ink-muted underline hover:text-ink"
+          >
+            Privacy Policy
+          </a>
           .
         </p>
       </div>

@@ -1,72 +1,20 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { availabilityCopy } from "@/lib/campaign";
 import { FadeIn } from "@/components/site/FadeIn";
+import { EmailSignup } from "@/components/site/EmailSignup";
+import { CountdownTimer, PreOrderButton } from "@/components/site/CountdownTimer";
 
 export const metadata: Metadata = {
   title: "Give My Country Back - Aaron Lewis",
   robots: "noindex, nofollow",
 };
 
-const STREAMING_ROW_1 = [
-  { label: "Apple Music", href: "#" },
-  { label: "Spotify", href: "#" },
-  { label: "Amazon Music", href: "#" },
-  { label: "YouTube Music", href: "#" },
-];
+/* ─── Section 1: Hero with Countdown ─── */
 
-const STREAMING_ROW_2 = [
-  { label: "iTunes", href: "#" },
-  { label: "YouTube", href: "#" },
-  { label: "Deezer", href: "#" },
-];
-
-function StreamingButtons({ row1 = STREAMING_ROW_1, row2 = STREAMING_ROW_2 }: {
-  row1?: typeof STREAMING_ROW_1;
-  row2?: typeof STREAMING_ROW_2;
-}) {
-  const btnClass =
-    "inline-block bg-ink px-7 py-3 text-center text-[0.7rem] font-bold uppercase tracking-[0.1em] text-bg transition-opacity hover:opacity-80";
-  const btnStyle = { fontFamily: "'Clarendon', serif" };
-
-  return (
-    <div className="flex flex-col items-center gap-3">
-      <div className="flex flex-wrap justify-center gap-3">
-        {row1.map((s) => (
-          <a
-            key={s.label}
-            href={s.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={btnClass}
-            style={btnStyle}
-          >
-            {s.label}
-          </a>
-        ))}
-      </div>
-      <div className="flex flex-wrap justify-center gap-3">
-        {row2.map((s) => (
-          <a
-            key={s.label}
-            href={s.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={btnClass}
-            style={btnStyle}
-          >
-            {s.label}
-          </a>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function AlbumHero() {
+function HeroSection() {
   return (
     <section className="relative w-full bg-bg" style={{ height: "100dvh" }}>
-      {/* Desktop hero — portrait on left half, fading to black */}
+      {/* Desktop hero — portrait left, fading right */}
       <div
         className="absolute inset-y-0 left-0 hidden w-[58%] md:block"
         style={{
@@ -118,12 +66,9 @@ function AlbumHero() {
             className="mx-auto w-full max-w-[85vw] sm:max-w-[75vw] md:max-w-[480px] lg:max-w-[560px] xl:max-w-[640px]"
           />
 
-          <p className="mt-4 font-display text-[2rem] font-normal text-ink sm:text-4xl md:text-3xl lg:text-4xl xl:text-5xl">
-            {availabilityCopy()}
-          </p>
-
           <div className="mt-8">
-            <StreamingButtons />
+            <CountdownTimer />
+            <PreOrderButton />
           </div>
         </div>
       </div>
@@ -131,84 +76,260 @@ function AlbumHero() {
   );
 }
 
-function SingleSection() {
+/* ─── Section 2: Vinyl Variations ─── */
+
+const VINYL_CARDS = [
+  {
+    image: "/merch/vinyls/TalkShopLive_SilverBlackSwirl.png",
+    title: "Metallic Silver & Black Swirl Vinyl",
+    subtitle: "TalkShopLive Exclusive",
+    href: "#",
+  },
+  {
+    image: "/merch/vinyls/D2C_RedWhiteBlueSplatter.png",
+    title: "Red, White & Blue Splatter Vinyl",
+    subtitle: "D2C Exclusive",
+    href: "#",
+  },
+  {
+    image: "/merch/vinyls/CreatiVets_Black.png",
+    title: "Black Vinyl",
+    subtitle: "Veteran-Designed Insert",
+    href: "#",
+  },
+];
+
+function VinylSection() {
   return (
-    <section className="relative overflow-hidden bg-bg px-6 py-24 md:px-8 lg:py-32">
-      {/* Ghost background — mobile */}
-      <div
-        className="absolute inset-0 md:hidden"
-        style={{
-          backgroundImage: "url(/heroes/AarowLewis_SingleSplashPage_HeroMobile.png)",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          opacity: 0.08,
-          maskImage: "linear-gradient(to bottom, transparent 0%, black 30%, black 70%, transparent 100%), linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)",
-          WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 30%, black 70%, transparent 100%), linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)",
-          maskComposite: "intersect",
-          WebkitMaskComposite: "destination-in" as never,
-        }}
-      />
-      {/* Ghost background — desktop */}
-      <div
-        className="absolute inset-0 hidden md:block"
-        style={{
-          backgroundImage: "url(/heroes/AarowLewis_SingleSplashPage_HeroDesktop.jpg)",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          opacity: 0.08,
-          maskImage: "linear-gradient(to bottom, transparent 0%, black 30%, black 70%, transparent 100%), linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)",
-          WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 30%, black 70%, transparent 100%), linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)",
-          maskComposite: "intersect",
-          WebkitMaskComposite: "destination-in" as never,
-        }}
-      />
-
-      <div className="relative z-10 mx-auto flex max-w-[800px] flex-col items-center text-center">
-        {/* Single cover */}
-        <div className="relative aspect-square w-[340px] md:w-[500px]">
-          <Image
-            src="/singles/AaronLewis_GiveMyCountryBack_Single.png"
-            alt="Give My Country Back single cover"
-            fill
-            className="object-cover"
-            style={{ boxShadow: "0 16px 48px rgba(0,0,0,0.5)" }}
+    <section id="vinyl" className="bg-bg px-6 py-20 md:px-8">
+      <div className="mx-auto max-w-[1200px]">
+        {/* Header */}
+        <div className="text-center">
+          <p
+            className="font-display leading-none text-accent"
+            style={{ fontSize: "clamp(2.5rem, 6vw, 5rem)", letterSpacing: "-0.02em" }}
+          >
+            Album Out July 17th
+          </p>
+          <p
+            className="mt-2 font-display text-ink"
+            style={{ fontSize: "clamp(1.5rem, 3vw, 2.5rem)" }}
+          >
+            Pre-Order Your Exclusive Vinyl Now
+          </p>
+          <div
+            className="mx-auto mt-6 mb-12"
+            style={{ width: 80, height: 1, backgroundColor: "var(--rule)" }}
           />
         </div>
 
-        {/* Logo */}
-        <div className="mt-8 w-[240px] md:w-[320px]">
-          <Image
-            src="/branding/AaronLewis_SingleGiveMyCountryBack_WhiteLogo.png"
-            alt="Aaron Lewis - Give My Country Back"
-            width={800}
-            height={800}
-            className="h-auto w-full"
-          />
+        {/* Cards */}
+        <div className="grid gap-6 md:grid-cols-3 md:gap-8">
+          {VINYL_CARDS.map((card) => (
+            <a
+              key={card.title}
+              href={card.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group block overflow-hidden"
+            >
+              {/* Image */}
+              <div className="overflow-hidden">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={card.image}
+                  alt={card.title}
+                  className="w-full scale-125 transition-transform duration-500 group-hover:scale-[1.28]"
+                />
+              </div>
+
+              {/* Content */}
+              <div className="p-5">
+                <p className="font-display text-[1.1rem] text-white">
+                  {card.title}
+                </p>
+                <p className="mt-1 text-[0.85rem] italic text-ink-muted">
+                  {card.subtitle}
+                </p>
+
+                {/* Button */}
+                <div
+                  className="mt-4 w-full bg-accent py-3 text-center text-[0.75rem] font-bold uppercase tracking-[0.12em] text-white transition-colors group-hover:bg-accent-hover"
+                  style={{ fontFamily: "'Clarendon', serif" }}
+                >
+                  Pre-Order
+                </div>
+              </div>
+            </a>
+          ))}
         </div>
 
-        {/* Eyebrow */}
-        <p
-          className="mt-6 text-[0.7rem] font-bold uppercase tracking-[0.25em] text-accent"
-          style={{ fontFamily: "'Clarendon', serif" }}
-        >
-          New Single
-        </p>
-
-        {/* Streaming buttons */}
-        <div className="mt-10">
-          <StreamingButtons />
+        <div className="mt-12 flex justify-center">
+          <a
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block border border-ink bg-transparent px-8 py-3 text-sm font-medium uppercase tracking-wide text-ink transition-colors hover:bg-ink hover:text-bg"
+          >
+            Explore Other Vinyl Variations
+          </a>
         </div>
       </div>
     </section>
   );
 }
 
+/* ─── Section 3: Album Pre-Save (split layout) ─── */
+
+const ALBUM_ROW_1 = [
+  { label: "Spotify", href: "#" },
+  { label: "Apple Music", href: "#" },
+  { label: "Amazon Music", href: "#" },
+  { label: "YouTube Music", href: "#" },
+];
+const ALBUM_ROW_2 = [
+  { label: "iTunes", href: "#" },
+  { label: "YouTube", href: "#" },
+  { label: "Deezer", href: "#" },
+];
+
+const SINGLE_DSP_ROW_1 = [
+  { label: "Spotify", href: "#" },
+  { label: "Apple Music", href: "#" },
+  { label: "Amazon Music", href: "#" },
+  { label: "YouTube Music", href: "#" },
+];
+const SINGLE_DSP_ROW_2 = [
+  { label: "iTunes", href: "#" },
+  { label: "YouTube", href: "#" },
+  { label: "Deezer", href: "#" },
+];
+
+const dspBtnClass =
+  "inline-block bg-ink px-5 py-2.5 text-center text-[0.7rem] font-bold uppercase tracking-[0.1em] text-bg transition-opacity hover:opacity-80";
+const dspBtnStyle = { fontFamily: "'Clarendon', serif" } as const;
+
+function DspButtons({ row1, row2 }: { row1: { label: string; href: string }[]; row2: { label: string; href: string }[] }) {
+  return (
+    <div className="flex flex-col items-start gap-2.5">
+      <div className="flex flex-wrap justify-start gap-2.5">
+        {row1.map((s) => (
+          <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer" className={dspBtnClass} style={dspBtnStyle}>
+            {s.label}
+          </a>
+        ))}
+      </div>
+      <div className="flex flex-wrap justify-start gap-2.5">
+        {row2.map((s) => (
+          <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer" className={dspBtnClass} style={dspBtnStyle}>
+            {s.label}
+          </a>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function AlbumPreSaveSection() {
+  return (
+    <section className="bg-bg px-6 py-20 md:px-8">
+      <div className="mx-auto flex max-w-[1200px] flex-col items-center md:flex-row">
+        {/* Left: Album art */}
+        <div className="flex w-full justify-center md:w-1/2">
+          <Image
+            src="/album_art/AarowLewis_GiveMyCountryBack_AlbumCover.jpg"
+            alt="Aaron Lewis Give My Country Back album cover"
+            width={1080}
+            height={1080}
+            className="w-full md:w-full"
+            style={{ boxShadow: "0 16px 48px rgba(0,0,0,0.5)" }}
+          />
+        </div>
+
+        {/* Right: Content */}
+        <div className="mt-10 flex w-full flex-col items-start text-left md:mt-0 md:w-1/2 md:pl-[4vw]">
+          <p
+            className="text-[0.7rem] font-bold uppercase tracking-[0.25em] text-accent"
+            style={dspBtnStyle}
+          >
+            Album
+          </p>
+          <p
+            className="mt-3 font-display text-accent"
+            style={{ fontSize: "clamp(2.5rem, 4vw, 3.25rem)" }}
+          >
+            Give My Country Back
+          </p>
+          <p
+            className="mt-2 font-display text-ink"
+            style={{ fontSize: "clamp(1.25rem, 2.5vw, 1.75rem)" }}
+          >
+            Pre-Save / Pre-Order
+          </p>
+          <div className="mt-8">
+            <DspButtons row1={ALBUM_ROW_1} row2={ALBUM_ROW_2} />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─── Section 4: Single Streaming (split layout, reversed) ─── */
+
+function SingleSection() {
+  return (
+    <section className="bg-bg px-6 py-20 md:px-8">
+      <div className="mx-auto flex max-w-[1200px] flex-col items-center md:flex-row-reverse">
+        {/* Right: Single art */}
+        <div className="flex w-full justify-center md:w-1/2">
+          <Image
+            src="/singles/AaronLewis_GiveMyCountryBack_Single.png"
+            alt="Give My Country Back single cover"
+            width={1080}
+            height={1080}
+            className="w-full md:w-full"
+            style={{ boxShadow: "0 16px 48px rgba(0,0,0,0.5)" }}
+          />
+        </div>
+
+        {/* Left: Content */}
+        <div className="mt-10 flex w-full flex-col items-start text-left md:mt-0 md:w-1/2 md:pr-[4vw]">
+          <p
+            className="text-[0.7rem] font-bold uppercase tracking-[0.25em] text-accent"
+            style={dspBtnStyle}
+          >
+            Single
+          </p>
+          <p
+            className="mt-3 font-display text-accent"
+            style={{ fontSize: "clamp(2.5rem, 4vw, 3.25rem)" }}
+          >
+            Give My Country Back
+          </p>
+          <p
+            className="mt-2 font-display text-ink"
+            style={{ fontSize: "clamp(1.25rem, 2.5vw, 1.75rem)" }}
+          >
+            Listen Now
+          </p>
+          <div className="mt-8">
+            <DspButtons row1={SINGLE_DSP_ROW_1} row2={SINGLE_DSP_ROW_2} />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─── Section 5: Merch Placeholder ─── */
+
 function MerchSection() {
   return (
     <section className="bg-elevated px-6 py-16 md:px-8">
       <div className="mx-auto flex max-w-[800px] flex-col items-center text-center">
         <p
-          className="mb-4 text-[0.7rem] uppercase tracking-[0.25em] text-accent"
+          className="mb-4 text-[0.7rem] font-bold uppercase tracking-[0.25em] text-accent"
           style={{ fontFamily: "'Clarendon', serif" }}
         >
           Merch
@@ -221,15 +342,26 @@ function MerchSection() {
   );
 }
 
+/* ─── Page ─── */
+
 export default function GmcbPage() {
   return (
     <>
-      <AlbumHero />
+      <HeroSection />
+      <FadeIn>
+        <VinylSection />
+      </FadeIn>
+      <FadeIn>
+        <AlbumPreSaveSection />
+      </FadeIn>
       <FadeIn>
         <SingleSection />
       </FadeIn>
       <FadeIn>
         <MerchSection />
+      </FadeIn>
+      <FadeIn>
+        <EmailSignup />
       </FadeIn>
     </>
   );
