@@ -148,9 +148,6 @@ function VinylSection() {
                 <p className="font-display text-[1.1rem] text-white">
                   {card.title}
                 </p>
-                <p className="mt-1 text-[0.85rem] italic text-ink-muted">
-                  {card.subtitle}
-                </p>
 
                 {/* Button */}
                 <div
