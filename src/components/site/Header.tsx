@@ -7,7 +7,6 @@ import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 
 import { SocialIcons } from "./SocialIcons";
-import { ALBUM_TITLE, PRESAVE_URL, ctaCopy, availabilityCopy } from "@/lib/campaign";
 
 const NAV_ITEMS = [
   { label: "Home", href: "/" },
@@ -111,12 +110,30 @@ export function Header() {
     closeDrawer();
   }, [pathname, closeDrawer]);
 
-  // Close on Escape
+  // Close on Escape and trap focus
+  const drawerRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (!drawerOpen) return;
     function onKeyDown(e: KeyboardEvent) {
       if (e.key === "Escape") {
         closeDrawer();
+        toggleButtonRef.current?.focus();
+        return;
+      }
+      if (e.key === "Tab" && drawerRef.current) {
+        const focusable = drawerRef.current.querySelectorAll<HTMLElement>(
+          'a[href], button, [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
       }
     }
     document.addEventListener("keydown", onKeyDown);
@@ -172,7 +189,7 @@ export function Header() {
 
         {/* Center: nav — absolutely positioned so it's truly centered regardless of left/right widths */}
         <nav
-          aria-label="Primary"
+          aria-label="Main navigation"
           className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center gap-8"
         >
           {NAV_ITEMS.map((item) => (
@@ -223,13 +240,14 @@ export function Header() {
             className="block transition-transform duration-150 ease-out"
             style={{ transform: drawerOpen ? "rotate(90deg)" : "rotate(0deg)" }}
           >
-            {drawerOpen ? <X size={28} /> : <Menu size={28} />}
+            {drawerOpen ? <X size={28} aria-hidden="true" /> : <Menu size={28} aria-hidden="true" />}
           </span>
         </button>
       </div>
 
       {/* Mobile drawer — renders below the header */}
       <div
+        ref={drawerRef}
         id="mobile-drawer"
         role="dialog"
         aria-modal={drawerOpen}
@@ -242,7 +260,7 @@ export function Header() {
         }`}
       >
         <nav
-          aria-label="Primary"
+          aria-label="Main navigation"
           className="flex h-full flex-col items-start gap-5 px-6 pt-8"
         >
           {allNavItems.map((item, i) =>

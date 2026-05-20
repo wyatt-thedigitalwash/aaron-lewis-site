@@ -223,7 +223,7 @@ export function DiscographyCarousel({ albums }: { albums: Album[] }) {
       aria-label="Discography"
       onKeyDown={onKeyDown}
       tabIndex={0}
-      className={`carousel-coverflow relative mx-auto outline-none select-none ${
+      className={`carousel-coverflow relative mx-auto select-none ${
         isDragging ? "cursor-grabbing" : "cursor-grab"
       }`}
       onTouchStart={onTouchStart}
@@ -332,7 +332,7 @@ export function DiscographyCarousel({ albums }: { albums: Album[] }) {
         aria-label="Previous album"
         className="absolute left-0 top-[calc(var(--carousel-h)/2)] z-40 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-[2px] border border-rule bg-transparent text-ink-muted transition-colors hover:border-ink hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent md:flex"
       >
-        <ChevronLeft size={24} />
+        <ChevronLeft size={24} aria-hidden="true" />
       </button>
       <button
         type="button"
@@ -340,7 +340,7 @@ export function DiscographyCarousel({ albums }: { albums: Album[] }) {
         aria-label="Next album"
         className="absolute right-0 top-[calc(var(--carousel-h)/2)] z-40 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-[2px] border border-rule bg-transparent text-ink-muted transition-colors hover:border-ink hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent md:flex"
       >
-        <ChevronRight size={24} />
+        <ChevronRight size={24} aria-hidden="true" />
       </button>
     </div>
   );

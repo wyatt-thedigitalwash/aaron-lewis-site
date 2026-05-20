@@ -2,11 +2,34 @@ import type { Metadata } from "next";
 import { VideoCard } from "@/components/site/VideoCard";
 import { EmailSignup } from "@/components/site/EmailSignup";
 import { FadeIn } from "@/components/site/FadeIn";
+import { breadcrumbSchema, BASE } from "@/lib/schema";
+
+const breadcrumbs = breadcrumbSchema([
+  { name: "Home", url: BASE },
+  { name: "Videos", url: `${BASE}/videos` },
+]);
 
 export const metadata: Metadata = {
   title: "Videos",
   description:
-    "Watch the music videos and live performances of Aaron Lewis.",
+    "Watch music videos, lyric videos, and live performances from Aaron Lewis. Official clips from Country Boy to Give My Country Back.",
+  alternates: { canonical: "https://aaronlewismusic.com/videos" },
+  openGraph: {
+    title: "Videos | Aaron Lewis",
+    description:
+      "Watch music videos, lyric videos, and live performances from Aaron Lewis. Official clips from Country Boy to Give My Country Back.",
+    url: "https://aaronlewismusic.com/videos",
+    siteName: "Aaron Lewis",
+    images: ["/og-image.png"],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Videos | Aaron Lewis",
+    description:
+      "Watch music videos, lyric videos, and live performances from Aaron Lewis. Official clips from Country Boy to Give My Country Back.",
+    images: ["/og-image.png"],
+  },
 };
 
 const VIDEOS = [
@@ -39,6 +62,10 @@ const VIDEOS = [
 export default function VideosPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbs) }}
+      />
       {/* Page header */}
       <FadeIn direction="none" duration={400}>
         <section className="bg-bg px-6 pb-8 pt-24 md:px-8 lg:pb-12 lg:pt-32">

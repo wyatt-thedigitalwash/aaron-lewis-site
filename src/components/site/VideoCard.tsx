@@ -27,7 +27,10 @@ export function VideoCard({
         <img
           src={thumbSrc}
           alt={`${title} thumbnail`}
+          width={480}
+          height={270}
           loading="lazy"
+          decoding="async"
           onError={() =>
             setThumbSrc(
               `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`
@@ -39,7 +42,7 @@ export function VideoCard({
         <div className="absolute inset-0 bg-bg/0 transition-colors duration-200 group-hover:bg-bg/30" />
         {/* Play icon */}
         <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-          <Play size={48} className="fill-ink text-ink" />
+          <Play size={48} className="fill-ink text-ink" aria-hidden="true" />
         </div>
       </div>
       <p className="mt-3 text-base font-medium text-ink transition-colors duration-200 group-hover:text-accent">

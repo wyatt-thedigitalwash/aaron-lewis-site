@@ -27,6 +27,7 @@ export function EmailSignup({
     const zipCode = (data.get("zip") as string).trim();
     const phone = (data.get("phone") as string).trim();
     const country = (data.get("country") as string).trim();
+    const website = (data.get("website") as string || "").trim();
 
     // Client-side validation
     const fieldErrors: Record<string, boolean> = {};
@@ -47,7 +48,7 @@ export function EmailSignup({
       const res = await fetch("/api/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, firstName, lastName, zipCode, phone, country }),
+        body: JSON.stringify({ email, firstName, lastName, zipCode, phone, country, website }),
       });
 
       const json = await res.json();
@@ -75,7 +76,7 @@ export function EmailSignup({
         </p>
 
         {isSubmitted ? (
-          <>
+          <div role="status" aria-live="polite">
             <h2 className="font-display text-5xl font-normal leading-tight text-ink lg:text-6xl">
               {status === "success"
                 ? "You\u2019re on the list."
@@ -84,7 +85,7 @@ export function EmailSignup({
             <p className="mt-3 max-w-md text-base text-ink-muted">
               Check your inbox for updates.
             </p>
-          </>
+          </div>
         ) : (
           <>
             {/* Heading */}
@@ -98,6 +99,12 @@ export function EmailSignup({
             </p>
 
             <form className="mt-12" onSubmit={handleSubmit} noValidate>
+              {/* Honeypot — hidden from real users, bots auto-fill it */}
+              <div className="absolute -left-[9999px]" aria-hidden="true">
+                <label htmlFor="website">Website</label>
+                <input type="text" id="website" name="website" tabIndex={-1} autoComplete="off" />
+              </div>
+
               {/* Row 1: First Name, Last Name, Email */}
               <div className="grid gap-6 lg:grid-cols-3 lg:gap-8">
                 <div>
@@ -109,10 +116,13 @@ export function EmailSignup({
                     id="firstName"
                     name="firstName"
                     required
+                    aria-required="true"
+                    aria-invalid={errors.firstName ? "true" : undefined}
+                    aria-describedby={errors.firstName ? "firstName-error" : undefined}
                     className="w-full border-0 border-b border-ink-muted/40 bg-transparent px-0 py-2 text-base text-ink transition-colors hover:border-ink/60 focus:border-accent focus:outline-none"
                   />
                   {errors.firstName && (
-                    <p className="mt-1 text-xs text-accent">Required</p>
+                    <p id="firstName-error" role="alert" className="mt-1 text-sm text-accent">Required</p>
                   )}
                 </div>
 
@@ -125,10 +135,13 @@ export function EmailSignup({
                     id="lastName"
                     name="lastName"
                     required
+                    aria-required="true"
+                    aria-invalid={errors.lastName ? "true" : undefined}
+                    aria-describedby={errors.lastName ? "lastName-error" : undefined}
                     className="w-full border-0 border-b border-ink-muted/40 bg-transparent px-0 py-2 text-base text-ink transition-colors hover:border-ink/60 focus:border-accent focus:outline-none"
                   />
                   {errors.lastName && (
-                    <p className="mt-1 text-xs text-accent">Required</p>
+                    <p id="lastName-error" role="alert" className="mt-1 text-sm text-accent">Required</p>
                   )}
                 </div>
 
@@ -141,10 +154,13 @@ export function EmailSignup({
                     id="email"
                     name="email"
                     required
+                    aria-required="true"
+                    aria-invalid={errors.email ? "true" : undefined}
+                    aria-describedby={errors.email ? "email-error" : undefined}
                     className="w-full border-0 border-b border-ink-muted/40 bg-transparent px-0 py-2 text-base text-ink transition-colors hover:border-ink/60 focus:border-accent focus:outline-none"
                   />
                   {errors.email && (
-                    <p className="mt-1 text-xs text-accent">Required</p>
+                    <p id="email-error" role="alert" className="mt-1 text-sm text-accent">Required</p>
                   )}
                 </div>
               </div>
@@ -197,6 +213,7 @@ export function EmailSignup({
                     </select>
                     <ChevronDown
                       size={16}
+                      aria-hidden="true"
                       className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 text-ink-muted"
                     />
                   </div>
@@ -216,7 +233,7 @@ export function EmailSignup({
 
               {/* Error message */}
               {status === "error" && (
-                <p className="mt-4 text-sm text-accent">
+                <p role="alert" className="mt-4 text-sm text-accent">
                   Something went wrong. Please try again.
                 </p>
               )}

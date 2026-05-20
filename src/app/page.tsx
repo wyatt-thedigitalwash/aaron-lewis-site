@@ -9,15 +9,37 @@ import {
   ctaCopy,
   availabilityCopy,
 } from "@/lib/campaign";
+import { breadcrumbSchema, BASE } from "@/lib/schema";
 import { EmailSignup } from "@/components/site/EmailSignup";
 import { FadeIn } from "@/components/site/FadeIn";
 import { HeroSlider } from "@/components/site/HeroSlider";
 import { ActionRow } from "@/components/site/ActionRow";
 
+const breadcrumbs = breadcrumbSchema([
+  { name: "Home", url: BASE },
+]);
+
 export const metadata: Metadata = {
-  title: "Home",
+  title: { absolute: "Aaron Lewis | Official Site" },
   description:
-    "The official site of Aaron Lewis. New album available July 17.",
+    "The official site of Aaron Lewis. Tour dates, new music, videos, and merch from the country artist and Staind frontman.",
+  alternates: { canonical: "https://aaronlewismusic.com" },
+  openGraph: {
+    title: "Aaron Lewis | Official Site",
+    description:
+      "The official site of Aaron Lewis. Tour dates, new music, videos, and merch from the country artist and Staind frontman.",
+    url: "https://aaronlewismusic.com",
+    siteName: "Aaron Lewis",
+    images: ["/og-image.png"],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Aaron Lewis | Official Site",
+    description:
+      "The official site of Aaron Lewis. Tour dates, new music, videos, and merch from the country artist and Staind frontman.",
+    images: ["/og-image.png"],
+  },
 };
 
 const PREVIEW_VIDEOS = [
@@ -201,7 +223,7 @@ function VideoPreview() {
                 <div className="absolute inset-0 bg-bg/0 transition-colors duration-200 group-hover:bg-bg/30" />
                 {/* Play icon */}
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-                  <Play size={48} className="fill-ink text-ink" />
+                  <Play size={48} className="fill-ink text-ink" aria-hidden="true" />
                 </div>
               </div>
               <p className="mt-3 text-base font-medium text-ink transition-colors duration-200 group-hover:text-accent">
@@ -227,6 +249,11 @@ function VideoPreview() {
 export default function Home() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbs) }}
+      />
+      <h1 className="sr-only">Aaron Lewis Official Site</h1>
       <HeroSlider />
       <ActionRow />
       <TourPreview />

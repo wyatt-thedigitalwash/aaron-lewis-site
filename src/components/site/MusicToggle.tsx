@@ -80,9 +80,14 @@ export function MusicToggle() {
         {/* ── Desktop layout ── */}
         <div className="hidden md:grid md:grid-cols-2 md:gap-8">
           <div
+            role="button"
+            tabIndex={0}
+            aria-pressed={selected === "album"}
+            aria-label="Select Give My Country Back album"
             className="flex cursor-pointer flex-col items-center transition-transform duration-300 hover:scale-[1.03]"
             style={cardStyleDesktop("album")}
             onClick={() => handleClick("album")}
+            onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); handleClick("album"); } }}
           >
             <Image
               src="/album_art/AarowLewis_GiveMyCountryBack_AlbumCover.jpg"
@@ -104,9 +109,14 @@ export function MusicToggle() {
           </div>
 
           <div
+            role="button"
+            tabIndex={0}
+            aria-pressed={selected === "single"}
+            aria-label="Select Give My Country Back single"
             className="flex cursor-pointer flex-col items-center transition-transform duration-300 hover:scale-[1.03]"
             style={cardStyleDesktop("single")}
             onClick={() => handleClick("single")}
+            onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); handleClick("single"); } }}
           >
             <Image
               src="/singles/AaronLewis_GiveMyCountryBack_Single.png"

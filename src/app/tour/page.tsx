@@ -6,10 +6,34 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import { EmailSignup } from "@/components/site/EmailSignup";
 import { FadeIn } from "@/components/site/FadeIn";
+import { breadcrumbSchema, BASE } from "@/lib/schema";
+
+const breadcrumbs = breadcrumbSchema([
+  { name: "Home", url: BASE },
+  { name: "Tour", url: `${BASE}/tour` },
+]);
 
 export const metadata: Metadata = {
   title: "Tour",
-  description: "Aaron Lewis tour dates and tickets.",
+  description:
+    "See Aaron Lewis live. Browse upcoming tour dates, venues, and buy tickets for shows across the country.",
+  alternates: { canonical: "https://aaronlewismusic.com/tour" },
+  openGraph: {
+    title: "Tour | Aaron Lewis",
+    description:
+      "See Aaron Lewis live. Browse upcoming tour dates, venues, and buy tickets for shows across the country.",
+    url: "https://aaronlewismusic.com/tour",
+    siteName: "Aaron Lewis",
+    images: ["/og-image.png"],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Tour | Aaron Lewis",
+    description:
+      "See Aaron Lewis live. Browse upcoming tour dates, venues, and buy tickets for shows across the country.",
+    images: ["/og-image.png"],
+  },
 };
 
 function PageHeader() {
@@ -59,6 +83,10 @@ function BandsintownWidget() {
 export default function TourPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbs) }}
+      />
       <FadeIn direction="none" duration={400}><PageHeader /></FadeIn>
       <FadeIn><BandsintownWidget /></FadeIn>
       <FadeIn><EmailSignup

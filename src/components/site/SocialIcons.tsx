@@ -38,7 +38,7 @@ export function SocialIcons({
           target="_blank"
           rel="noopener noreferrer"
           aria-label={`${s.label} (opens in new tab)`}
-          className="text-ink-muted transition-colors duration-150 hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center text-ink-muted transition-colors duration-150 hover:text-ink"
         >
           <s.Icon size={size} aria-hidden="true" />
         </a>

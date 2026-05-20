@@ -13,7 +13,7 @@
   --bg: #0E0E0E;
   --bg-elevated: #181818;
   --ink: #BCB2A5;
-  --ink-muted: #7A7165;
+  --ink-muted: #8A8075;
   --accent: #B63D35;
   --accent-hover: #993229;
   --rule: #2A2622;
@@ -82,12 +82,44 @@ select:-webkit-autofill:focus {
 }
 
 
+/* Global focus-visible indicator */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Skip navigation link */
+.skip-nav {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  z-index: 9999;
+}
+.skip-nav:focus {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  width: auto;
+  height: auto;
+  padding: 12px 24px;
+  background: var(--bg);
+  color: var(--ink);
+  border: 2px solid var(--accent);
+  font-size: 14px;
+  font-weight: 600;
+  z-index: 9999;
+}
+
 /* Respect reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
 

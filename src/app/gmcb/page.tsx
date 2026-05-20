@@ -139,6 +139,10 @@ function VinylSection() {
                 <img
                   src={card.image}
                   alt={card.title}
+                  width={800}
+                  height={800}
+                  loading="lazy"
+                  decoding="async"
                   className="w-full scale-125 transition-transform duration-500 group-hover:scale-[1.28]"
                 />
               </div>

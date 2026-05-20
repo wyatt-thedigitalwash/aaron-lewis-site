@@ -21,6 +21,9 @@ export function SplashPage() {
 
   return (
     <div
+      role="dialog"
+      aria-modal="true"
+      aria-label="New single announcement"
       className="fixed inset-0 z-[9999]"
       style={{
         backgroundColor: "#1a1a1a",
@@ -30,6 +33,7 @@ export function SplashPage() {
     >
       {/* Ghost background image — mobile */}
       <div
+        aria-hidden="true"
         className="absolute inset-0 md:hidden"
         style={{
           backgroundImage:
@@ -42,6 +46,7 @@ export function SplashPage() {
       />
       {/* Ghost background image — desktop */}
       <div
+        aria-hidden="true"
         className="absolute inset-0 hidden md:block"
         style={{
           backgroundImage:
@@ -55,6 +60,7 @@ export function SplashPage() {
 
       {/* Ambient glow */}
       <div
+        aria-hidden="true"
         className="absolute inset-0"
         style={{
           background:

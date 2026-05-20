@@ -11,15 +11,38 @@ import {
   ctaCopy,
   availabilityCopy,
 } from "@/lib/campaign";
+import { breadcrumbSchema, BASE } from "@/lib/schema";
 import { EmailSignup } from "@/components/site/EmailSignup";
 import { FadeIn } from "@/components/site/FadeIn";
 import { DiscographyCarousel } from "@/components/site/DiscographyCarousel";
 import type { Album } from "@/components/site/DiscographyCarousel";
 
+const breadcrumbs = breadcrumbSchema([
+  { name: "Home", url: BASE },
+  { name: "Music", url: `${BASE}/music` },
+]);
+
 export const metadata: Metadata = {
   title: "Music",
   description:
-    "The music of Aaron Lewis. New album Give My Country Back available July 17.",
+    "Stream and explore the music of Aaron Lewis. Featuring Give My Country Back and the full discography from The Hill to Town Line.",
+  alternates: { canonical: "https://aaronlewismusic.com/music" },
+  openGraph: {
+    title: "Music | Aaron Lewis",
+    description:
+      "Stream and explore the music of Aaron Lewis. Featuring Give My Country Back and the full discography from The Hill to Town Line.",
+    url: "https://aaronlewismusic.com/music",
+    siteName: "Aaron Lewis",
+    images: ["/og-image.png"],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Music | Aaron Lewis",
+    description:
+      "Stream and explore the music of Aaron Lewis. Featuring Give My Country Back and the full discography from The Hill to Town Line.",
+    images: ["/og-image.png"],
+  },
 };
 
 // Verify the back catalog list with BMLG (5 titles based on public discography).
@@ -141,6 +164,10 @@ function Discography() {
 export default function MusicPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbs) }}
+      />
       <FeaturedHero />
       <FadeIn><Tracklist /></FadeIn>
       <FadeIn><Discography /></FadeIn>

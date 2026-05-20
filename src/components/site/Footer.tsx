@@ -20,7 +20,12 @@ function FooterCopyright() {
           {LEGAL_LINKS.map((link, i) => (
             <span key={link.label} className="flex items-center gap-1">
               {i > 0 && <span aria-hidden="true">&middot;</span>}
-              <a href={link.href} className="hover:text-ink">
+              <a
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block py-2 hover:text-ink"
+              >
                 {link.label}
               </a>
             </span>

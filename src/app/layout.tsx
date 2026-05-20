@@ -3,6 +3,7 @@ import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { Tracking } from "@/components/site/Tracking";
 import { SplashGate } from "@/components/site/SplashGate";
+import { musicGroupSchema } from "@/lib/schema";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -12,10 +13,12 @@ export const metadata: Metadata = {
     template: "%s | Aaron Lewis",
   },
   description:
-    "The official site of Aaron Lewis. New album available July 17.",
+    "The official site of Aaron Lewis. Tour dates, new music, videos, and merch from the country artist and Staind frontman.",
   icons: {
-    icon: "/favicon.jpg",
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
   },
+  manifest: "/site.webmanifest",
   robots: {
     index: true,
     follow: true,
@@ -26,12 +29,14 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Aaron Lewis",
     description:
-      "The official site of Aaron Lewis. New album available July 17.",
-    images: ["/open-graph.jpg"],
+      "The official site of Aaron Lewis. Tour dates, new music, videos, and merch from the country artist and Staind frontman.",
+    siteName: "Aaron Lewis",
+    images: ["/og-image.png"],
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
+    images: ["/og-image.png"],
   },
 };
 
@@ -46,6 +51,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://use.typekit.net" />
         <link rel="preconnect" href="https://p.typekit.net" crossOrigin="anonymous" />
         <link rel="stylesheet" href="https://use.typekit.net/sas4nlb.css" />
+        <meta name="theme-color" content="#0E0E0E" />
         <meta name="robots" content="noimageai" />
         <meta name="robots" content="noai" />
         {process.env.STAGING_PASSWORD && (
@@ -53,6 +59,10 @@ export default function RootLayout({
         )}
       </head>
       <body className="min-h-full flex flex-col">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(musicGroupSchema) }}
+        />
         <Tracking />
         <noscript>
           <iframe
@@ -70,9 +80,12 @@ export default function RootLayout({
             alt=""
           />
         </noscript>
+        <a href="#main-content" className="skip-nav">
+          Skip to main content
+        </a>
         <SplashGate>
           <Header />
-          <main className="flex-1">{children}</main>
+          <main id="main-content" className="flex-1">{children}</main>
           <Footer />
         </SplashGate>
       </body>

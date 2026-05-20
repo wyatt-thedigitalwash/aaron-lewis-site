@@ -20,7 +20,7 @@ const PANELS = [
     href: PRESAVE_URL,
   },
   {
-    bg: "/images/heros/AaronLewis_OfficialHero.jpg",
+    bg: "/merch/AaronLewis_MerchPanel.jpg",
     bgPosition: "center",
     eyebrow: "Official",
     title: "Merch Store",
@@ -44,12 +44,15 @@ export function ActionRow() {
               href={panel.href}
               target="_blank"
               rel="noopener noreferrer"
+              aria-label={`${panel.eyebrow}: ${panel.title} - ${cta} (opens in new tab)`}
               className={`action-panel group relative block aspect-square overflow-hidden ${
                 i > 0 ? "md:border-l md:border-rule" : ""
               }`}
             >
               <div
                 className="action-panel-bg absolute inset-0 transition-transform duration-500 ease-out"
+                role="img"
+                aria-hidden="true"
                 style={{
                   backgroundImage: `url(${panel.bg})`,
                   backgroundSize: "cover",
