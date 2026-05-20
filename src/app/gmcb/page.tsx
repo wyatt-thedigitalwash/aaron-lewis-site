@@ -80,7 +80,7 @@ function HeroSection() {
 
 const VINYL_CARDS = [
   {
-    image: "/merch/vinyls/CreatiVets_Black.png",
+    image: "/merch/vinyls/StandardRetail_Black.png",
     title: "Black Vinyl",
     subtitle: "Veteran-Designed Insert",
     href: "#",
