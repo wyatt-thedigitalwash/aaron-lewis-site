@@ -148,8 +148,8 @@ function VinylSection() {
               </div>
 
               {/* Content */}
-              <div className="p-5">
-                <p className="font-display text-[1.1rem] text-white">
+              <div className="-mt-4 px-5 pb-5 md:mt-0 md:pt-2">
+                <p className="font-display text-[1.1rem] text-white text-center md:text-left">
                   {card.title}
                 </p>
 
@@ -203,14 +203,14 @@ const dspBtnStyle = { fontFamily: "'Clarendon', serif" } as const;
 
 function DspButtons({ buttons }: { buttons: { label: string; href: string }[] }) {
   return (
-    <div className="flex w-full flex-col gap-2.5 md:flex-row md:flex-wrap md:gap-3">
+    <div className="flex w-full flex-col gap-2.5">
       {buttons.map((s) => (
         <a
           key={s.label}
           href={s.href}
           target="_blank"
           rel="noopener noreferrer"
-          className="block bg-ink text-center text-[0.8rem] font-bold uppercase tracking-[0.1em] text-bg transition-opacity hover:opacity-80 md:inline-block"
+          className="block w-full bg-ink text-center text-[0.8rem] font-bold uppercase tracking-[0.1em] text-bg transition-opacity hover:opacity-80"
           style={{ ...dspBtnStyle, padding: "16px 36px" }}
         >
           {s.label}
@@ -237,7 +237,7 @@ function AlbumPreSaveSection() {
         </div>
 
         {/* Right: Buttons only */}
-        <div className="mt-10 flex w-full flex-col items-start md:mt-0 md:w-1/2 md:pl-[4vw]">
+        <div className="mt-10 w-full md:mt-0 md:w-1/2 md:pl-[4vw]">
           <DspButtons buttons={ALBUM_BUTTONS} />
         </div>
       </div>
@@ -264,7 +264,7 @@ function SingleSection() {
         </div>
 
         {/* Left: Content */}
-        <div className="mt-10 flex w-full flex-col items-start text-left md:mt-0 md:w-1/2 md:pr-[4vw]">
+        <div className="mt-10 flex w-full flex-col items-center text-center md:items-start md:text-left md:mt-0 md:w-1/2 md:pr-[4vw]">
           <p
             className="text-[0.7rem] font-bold uppercase tracking-[0.25em] text-accent"
             style={dspBtnStyle}

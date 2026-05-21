@@ -243,7 +243,7 @@ export function EmailSignup({
 
         {/* Disclaimer */}
         <p className="mt-8 text-xs text-ink-muted/70">
-          By submitting this form, you agree to the Big Machine Label Group{" "}
+          By submitting this form, you agree to the Big Machine Records{" "}
           <a
             href="https://www.bigmachinelabelgroup.com/privacy-notice"
             target="_blank"
