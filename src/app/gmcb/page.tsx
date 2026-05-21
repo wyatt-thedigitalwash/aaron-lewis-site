@@ -167,12 +167,12 @@ function VinylSection() {
 
         <div className="mt-12 flex justify-center">
           <a
-            href="#"
+            href="https://aaronlewis.ffm.to/givemycountrybackalbum.TFU"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-block border border-ink bg-transparent px-8 py-3 text-sm font-medium uppercase tracking-wide text-ink transition-colors hover:bg-ink hover:text-bg"
           >
-            Explore Other Vinyl Variations
+            Pre-Order Other Vinyl Variants
           </a>
         </div>
       </div>
@@ -182,51 +182,40 @@ function VinylSection() {
 
 /* ─── Section 3: Album Pre-Save (split layout) ─── */
 
-const ALBUM_ROW_1 = [
+const ALBUM_BUTTONS = [
+  { label: "Download on iTunes", href: "#" },
+  { label: "Pre-Save on Spotify", href: "#" },
+  { label: "Pre-Add on Apple Music", href: "#" },
+  { label: "Pre-Save on Amazon Music", href: "#" },
+  { label: "Pre-Save on YouTube Music", href: "#" },
+];
+
+const SINGLE_BUTTONS = [
   { label: "Spotify", href: "#" },
   { label: "Apple Music", href: "#" },
   { label: "Amazon Music", href: "#" },
   { label: "YouTube Music", href: "#" },
-];
-const ALBUM_ROW_2 = [
   { label: "iTunes", href: "#" },
   { label: "YouTube", href: "#" },
-  { label: "Deezer", href: "#" },
 ];
 
-const SINGLE_DSP_ROW_1 = [
-  { label: "Spotify", href: "#" },
-  { label: "Apple Music", href: "#" },
-  { label: "Amazon Music", href: "#" },
-  { label: "YouTube Music", href: "#" },
-];
-const SINGLE_DSP_ROW_2 = [
-  { label: "iTunes", href: "#" },
-  { label: "YouTube", href: "#" },
-  { label: "Deezer", href: "#" },
-];
-
-const dspBtnClass =
-  "inline-block bg-ink px-5 py-2.5 text-center text-[0.7rem] font-bold uppercase tracking-[0.1em] text-bg transition-opacity hover:opacity-80";
 const dspBtnStyle = { fontFamily: "'Clarendon', serif" } as const;
 
-function DspButtons({ row1, row2 }: { row1: { label: string; href: string }[]; row2: { label: string; href: string }[] }) {
+function DspButtons({ buttons }: { buttons: { label: string; href: string }[] }) {
   return (
-    <div className="flex flex-col items-start gap-2.5">
-      <div className="flex flex-wrap justify-start gap-2.5">
-        {row1.map((s) => (
-          <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer" className={dspBtnClass} style={dspBtnStyle}>
-            {s.label}
-          </a>
-        ))}
-      </div>
-      <div className="flex flex-wrap justify-start gap-2.5">
-        {row2.map((s) => (
-          <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer" className={dspBtnClass} style={dspBtnStyle}>
-            {s.label}
-          </a>
-        ))}
-      </div>
+    <div className="flex w-full flex-col gap-2.5 md:flex-row md:flex-wrap md:gap-3">
+      {buttons.map((s) => (
+        <a
+          key={s.label}
+          href={s.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block bg-ink text-center text-[0.8rem] font-bold uppercase tracking-[0.1em] text-bg transition-opacity hover:opacity-80 md:inline-block"
+          style={{ ...dspBtnStyle, padding: "16px 36px" }}
+        >
+          {s.label}
+        </a>
+      ))}
     </div>
   );
 }
@@ -234,7 +223,7 @@ function DspButtons({ row1, row2 }: { row1: { label: string; href: string }[]; r
 function AlbumPreSaveSection() {
   return (
     <section className="bg-bg px-6 py-20 md:px-8">
-      <div className="mx-auto flex max-w-[1200px] flex-col items-center md:flex-row">
+      <div className="mx-auto flex max-w-[1200px] flex-col items-center md:flex-row md:items-center">
         {/* Left: Album art */}
         <div className="flex w-full justify-center md:w-1/2">
           <Image
@@ -247,29 +236,9 @@ function AlbumPreSaveSection() {
           />
         </div>
 
-        {/* Right: Content */}
-        <div className="mt-10 flex w-full flex-col items-start text-left md:mt-0 md:w-1/2 md:pl-[4vw]">
-          <p
-            className="text-[0.7rem] font-bold uppercase tracking-[0.25em] text-accent"
-            style={dspBtnStyle}
-          >
-            Album
-          </p>
-          <p
-            className="mt-3 font-display text-accent"
-            style={{ fontSize: "clamp(2.5rem, 4vw, 3.25rem)" }}
-          >
-            Give My Country Back
-          </p>
-          <p
-            className="mt-2 font-display text-ink"
-            style={{ fontSize: "clamp(1.25rem, 2.5vw, 1.75rem)" }}
-          >
-            Pre-Save / Pre-Order
-          </p>
-          <div className="mt-8">
-            <DspButtons row1={ALBUM_ROW_1} row2={ALBUM_ROW_2} />
-          </div>
+        {/* Right: Buttons only */}
+        <div className="mt-10 flex w-full flex-col items-start md:mt-0 md:w-1/2 md:pl-[4vw]">
+          <DspButtons buttons={ALBUM_BUTTONS} />
         </div>
       </div>
     </section>
@@ -314,8 +283,8 @@ function SingleSection() {
           >
             Listen Now
           </p>
-          <div className="mt-8">
-            <DspButtons row1={SINGLE_DSP_ROW_1} row2={SINGLE_DSP_ROW_2} />
+          <div className="mt-8 w-full">
+            <DspButtons buttons={SINGLE_BUTTONS} />
           </div>
         </div>
       </div>
