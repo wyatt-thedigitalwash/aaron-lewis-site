@@ -3,6 +3,7 @@ import Image from "next/image";
 import { FadeIn } from "@/components/site/FadeIn";
 import { EmailSignup } from "@/components/site/EmailSignup";
 import { CountdownTimer, PreOrderButton } from "@/components/site/CountdownTimer";
+import { ShopifyCollection } from "@/components/site/ShopifyCollection";
 
 export const metadata: Metadata = {
   title: "Give My Country Back - Aaron Lewis",
@@ -297,16 +298,16 @@ function SingleSection() {
 function MerchSection() {
   return (
     <section className="bg-elevated px-6 py-16 md:px-8">
-      <div className="mx-auto flex max-w-[800px] flex-col items-center text-center">
-        <p
-          className="mb-4 text-[0.7rem] font-bold uppercase tracking-[0.25em] text-accent"
-          style={{ fontFamily: "'Clarendon', serif" }}
-        >
-          Merch
-        </p>
-        <p className="font-display text-3xl text-ink md:text-4xl">
-          Coming Soon
-        </p>
+      <div className="mx-auto max-w-[1200px]">
+        <div className="mb-10 text-center">
+          <p
+            className="mb-4 text-[0.7rem] font-bold uppercase tracking-[0.25em] text-accent"
+            style={{ fontFamily: "'Clarendon', serif" }}
+          >
+            Merch
+          </p>
+        </div>
+        <ShopifyCollection />
       </div>
     </section>
   );

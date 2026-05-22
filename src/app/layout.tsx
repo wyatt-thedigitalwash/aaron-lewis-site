@@ -54,9 +54,6 @@ export default function RootLayout({
         <meta name="theme-color" content="#0E0E0E" />
         <meta name="robots" content="noimageai" />
         <meta name="robots" content="noai" />
-        {process.env.STAGING_PASSWORD && (
-          <meta name="robots" content="noindex, nofollow" />
-        )}
       </head>
       <body className="min-h-full flex flex-col">
         <script
