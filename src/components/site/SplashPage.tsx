@@ -113,7 +113,7 @@ export function SplashPage() {
               style={{ animation: "splashFadeUp 600ms ease 800ms both" }}
             >
               <a
-                href="https://aaronlewis.ffm.to/givemycountryback.OWE"
+                href="https://aaronlewis.ffm.to/givemycountryback"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full min-[480px]:w-auto bg-accent px-10 py-3.5 text-center text-[0.75rem] font-bold uppercase tracking-[0.15em] text-white transition-colors hover:bg-accent-hover"

@@ -8,7 +8,7 @@ const PANELS = [
     title: "Give My Country Back",
     subtitle: null as string | null,
     cta: "Listen Now",
-    href: "https://aaronlewis.ffm.to/givemycountryback.OWE",
+    href: "https://aaronlewis.ffm.to/givemycountryback",
   },
   {
     bg: "/album_art/AarowLewis_GiveMyCountryBack_AlbumCover.jpg",

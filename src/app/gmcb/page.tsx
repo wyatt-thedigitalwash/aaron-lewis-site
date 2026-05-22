@@ -184,20 +184,20 @@ function VinylSection() {
 /* ─── Section 3: Album Pre-Save (split layout) ─── */
 
 const ALBUM_BUTTONS = [
-  { label: "Download on iTunes", href: "#" },
-  { label: "Pre-Save on Spotify", href: "#" },
-  { label: "Pre-Add on Apple Music", href: "#" },
-  { label: "Pre-Save on Amazon Music", href: "#" },
-  { label: "Pre-Save on YouTube Music", href: "#" },
+  { label: "Download on iTunes", href: "https://aaronlewis.ffm.to/givemycountryback-al" },
+  { label: "Pre-Save on Spotify", href: "https://aaronlewis.ffm.to/givemycountryback-al" },
+  { label: "Pre-Add on Apple Music", href: "https://aaronlewis.ffm.to/givemycountryback-al" },
+  { label: "Pre-Save on Amazon Music", href: "https://aaronlewis.ffm.to/givemycountryback-al" },
+  { label: "Pre-Save on YouTube Music", href: "https://aaronlewis.ffm.to/givemycountryback-al" },
 ];
 
 const SINGLE_BUTTONS = [
-  { label: "Spotify", href: "#" },
-  { label: "Apple Music", href: "#" },
-  { label: "Amazon Music", href: "#" },
-  { label: "YouTube Music", href: "#" },
-  { label: "iTunes", href: "#" },
-  { label: "YouTube", href: "#" },
+  { label: "Spotify", href: "https://open.spotify.com/track/2FL6eDT5elqDFPCo0XnkHo" },
+  { label: "Apple Music", href: "https://music.apple.com/us/song/give-my-country-back/6767604468" },
+  { label: "Amazon Music", href: "https://music.amazon.com/tracks/B0H12S6DHB/?ref=dm_ff_amazonmusic_3p&tag=featurefm-20" },
+  { label: "YouTube Music", href: "https://music.youtube.com/watch?v=M9Wo_In0X6U" },
+  { label: "iTunes", href: "https://geo.music.apple.com/us/album/give-my-country-back/6767604325?app=itunes&ls=1" },
+  { label: "YouTube", href: "https://www.youtube.com/watch?v=M9Wo_In0X6U" },
 ];
 
 const dspBtnStyle = { fontFamily: "'Clarendon', serif" } as const;
