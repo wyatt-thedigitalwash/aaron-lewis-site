@@ -130,6 +130,7 @@ select:-webkit-autofill:focus {
   --outer-offset: 100vw;
   --carousel-h: calc(65vw + 80px);
   max-width: 100%;
+  overflow: hidden;
 }
 
 @media (min-width: 768px) {
