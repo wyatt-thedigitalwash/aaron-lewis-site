@@ -15,7 +15,6 @@ export const metadata: Metadata = {
   description:
     "The official site of Aaron Lewis. Tour dates, new music, videos, and merch from the country artist and Staind frontman.",
   icons: {
-    icon: "/favicon.ico",
     apple: "/apple-touch-icon.png",
   },
   manifest: "/site.webmanifest",
@@ -31,12 +30,12 @@ export const metadata: Metadata = {
     description:
       "The official site of Aaron Lewis. Tour dates, new music, videos, and merch from the country artist and Staind frontman.",
     siteName: "Aaron Lewis",
-    images: ["/og-image.png"],
+    images: [{ url: "/og-image.png", width: 1200, height: 630, type: "image/png" }],
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    images: ["/og-image.png"],
+    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
   },
 };
 
@@ -52,6 +51,9 @@ export default function RootLayout({
         <link rel="preconnect" href="https://p.typekit.net" crossOrigin="anonymous" />
         <link rel="stylesheet" href="https://use.typekit.net/sas4nlb.css" />
         <meta name="theme-color" content="#0E0E0E" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:type" content="image/png" />
         <meta name="robots" content="noimageai" />
         <meta name="robots" content="noai" />
       </head>
