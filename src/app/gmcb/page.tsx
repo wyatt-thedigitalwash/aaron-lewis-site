@@ -124,58 +124,7 @@ function VinylSection() {
           />
         </div>
 
-        {/* Cards */}
-        <div className="grid gap-6 md:grid-cols-3 md:gap-8">
-          {VINYL_CARDS.map((card) => (
-            <a
-              key={card.title}
-              href={card.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group block overflow-hidden"
-            >
-              {/* Image */}
-              <div className="overflow-hidden">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={card.image}
-                  alt={card.title}
-                  width={800}
-                  height={800}
-                  loading="lazy"
-                  decoding="async"
-                  className="w-full scale-125 transition-transform duration-500 group-hover:scale-[1.28]"
-                />
-              </div>
-
-              {/* Content */}
-              <div className="-mt-4 px-5 pb-5 md:mt-0 md:pt-2">
-                <p className="font-display text-[1.1rem] text-white text-center md:text-left">
-                  {card.title}
-                </p>
-
-                {/* Button */}
-                <div
-                  className="mt-4 w-full bg-accent py-3 text-center text-[0.75rem] font-bold uppercase tracking-[0.12em] text-white transition-colors group-hover:bg-accent-hover"
-                  style={{ fontFamily: "'Clarendon', serif" }}
-                >
-                  Pre-Order
-                </div>
-              </div>
-            </a>
-          ))}
-        </div>
-
-        <div className="mt-12 flex justify-center">
-          <a
-            href="https://aaronlewis.ffm.to/givemycountrybackalbum.TFU"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block border border-ink bg-transparent px-8 py-3 text-sm font-medium uppercase tracking-wide text-ink transition-colors hover:bg-ink hover:text-bg"
-          >
-            Pre-Order Other Vinyl Variants
-          </a>
-        </div>
+        <ShopifyCollection />
       </div>
     </section>
   );
@@ -293,25 +242,6 @@ function SingleSection() {
   );
 }
 
-/* ─── Section 5: Merch Placeholder ─── */
-
-function MerchSection() {
-  return (
-    <section className="bg-elevated px-6 py-16 md:px-8">
-      <div className="mx-auto max-w-[1200px]">
-        <div className="mb-10 text-center">
-          <p
-            className="mb-4 text-[0.7rem] font-bold uppercase tracking-[0.25em] text-accent"
-            style={{ fontFamily: "'Clarendon', serif" }}
-          >
-            Merch
-          </p>
-        </div>
-        <ShopifyCollection />
-      </div>
-    </section>
-  );
-}
 
 /* ─── Page ─── */
 
@@ -327,9 +257,6 @@ export default function GmcbPage() {
       </FadeIn>
       <FadeIn>
         <SingleSection />
-      </FadeIn>
-      <FadeIn>
-        <MerchSection />
       </FadeIn>
       <FadeIn>
         <EmailSignup />
