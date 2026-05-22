@@ -163,6 +163,36 @@ select:-webkit-autofill:focus {
   }
 }
 
+/* Shopify Buy Button widget overrides */
+.shopify-buy__product__title {
+  color: #BCB2A5 !important;
+  font-family: 'Clarendon', serif !important;
+}
+
+.shopify-buy__product__actual-price,
+.shopify-buy__product__price {
+  color: #BCB2A5 !important;
+}
+
+.shopify-buy__product {
+  background-color: transparent !important;
+}
+
+.shopify-buy__btn {
+  background-color: #B63D35 !important;
+  color: #FFFFFF !important;
+  font-family: 'Clarendon', serif !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.12em !important;
+  font-size: 0.75rem !important;
+  font-weight: 700 !important;
+  border-radius: 0 !important;
+}
+
+.shopify-buy__btn:hover {
+  background-color: #993229 !important;
+}
+
 ::selection {
   background: var(--accent);
   color: var(--ink);
