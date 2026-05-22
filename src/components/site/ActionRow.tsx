@@ -26,7 +26,8 @@ const PANELS = [
     title: "Merch Store",
     subtitle: null,
     cta: "Shop Now",
-    href: "https://aaronlewismerch.myshopify.com",
+    href: "/gmcb-merch",
+    external: false,
   },
 ];
 
@@ -42,9 +43,10 @@ export function ActionRow() {
             <a
               key={i}
               href={panel.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={`${panel.eyebrow}: ${panel.title} - ${cta} (opens in new tab)`}
+              {...("external" in panel && panel.external === false
+                ? {}
+                : { target: "_blank", rel: "noopener noreferrer" })}
+              aria-label={`${panel.eyebrow}: ${panel.title} - ${cta}${"external" in panel && panel.external === false ? "" : " (opens in new tab)"}`}
               className={`action-panel group relative block aspect-square overflow-hidden ${
                 i > 0 ? "md:border-l md:border-rule" : ""
               }`}
