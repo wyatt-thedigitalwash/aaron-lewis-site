@@ -16,6 +16,7 @@ import { EmailSignup } from "@/components/site/EmailSignup";
 import { FadeIn } from "@/components/site/FadeIn";
 import { DiscographyCarousel } from "@/components/site/DiscographyCarousel";
 import type { Album } from "@/components/site/DiscographyCarousel";
+import { ShopifyCollection } from "@/components/site/ShopifyCollection";
 
 const breadcrumbs = breadcrumbSchema([
   { name: "Home", url: BASE },
@@ -169,6 +170,13 @@ export default function MusicPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbs) }}
       />
       <FeaturedHero />
+      <FadeIn>
+        <section className="bg-bg px-6 pb-0 pt-20 md:px-8 lg:pt-32">
+          <div className="mx-auto max-w-[1200px]">
+            <ShopifyCollection />
+          </div>
+        </section>
+      </FadeIn>
       <FadeIn><Tracklist /></FadeIn>
       <FadeIn><Discography /></FadeIn>
       <FadeIn><EmailSignup /></FadeIn>
