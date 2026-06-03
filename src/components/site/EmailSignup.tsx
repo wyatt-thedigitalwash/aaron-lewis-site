@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
+import Link from "next/link";
 import { COUNTRIES } from "@/lib/countries";
 
 export function EmailSignup({
@@ -244,14 +245,12 @@ export function EmailSignup({
         {/* Disclaimer */}
         <p className="mt-8 text-xs text-ink-muted/70">
           By submitting this form, you agree to the Big Machine Records{" "}
-          <a
-            href="https://www.bigmachinelabelgroup.com/privacy-notice"
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href="/privacy"
             className="text-ink-muted underline hover:text-ink"
           >
             Privacy Policy
-          </a>
+          </Link>
           , and Laylo&apos;s{" "}
           <a
             href="https://docs.laylo.com/en/articles/6497431-terms-of-service"

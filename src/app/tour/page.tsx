@@ -59,6 +59,7 @@ function BandsintownWidget() {
           <div
             className="bit-widget-initializer"
             data-artist-name="Aaron Lewis"
+            data-app-id="umg_BMLG_AaronLewis"
             data-display-local-dates="false"
             data-display-past-dates="false"
             data-auto-style="false"

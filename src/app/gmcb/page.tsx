@@ -124,7 +124,7 @@ function VinylSection() {
           />
         </div>
 
-        <ShopifyCollection />
+        <ShopifyCollection collectionId="336832987325" />
       </div>
     </section>
   );
@@ -257,6 +257,13 @@ export default function GmcbPage() {
       </FadeIn>
       <FadeIn>
         <SingleSection />
+      </FadeIn>
+      <FadeIn>
+        <section className="bg-elevated px-6 py-20 md:px-8">
+          <div className="mx-auto max-w-[1200px]">
+            <ShopifyCollection collectionId="336833052861" />
+          </div>
+        </section>
       </FadeIn>
       <FadeIn>
         <EmailSignup />
