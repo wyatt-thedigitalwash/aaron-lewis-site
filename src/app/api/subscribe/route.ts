@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { createHash } from "crypto";
 
 // ---------- Rate limiting (in-memory, resets on cold start) ----------
 const rateMap = new Map<string, { count: number; resetAt: number }>();
@@ -96,19 +97,25 @@ export async function POST(request: NextRequest) {
     );
   }
 
+  const ARTIST_TAG = "Aaron Lewis";
+  const authHeader = `Basic ${Buffer.from("anystring:" + API_KEY).toString("base64")}`;
+  const subscriberHash = createHash("md5")
+    .update(email.toLowerCase())
+    .digest("hex");
+
   try {
+    // PUT upserts — creates new members or updates existing ones
     const res = await fetch(
-      `https://${SERVER}.api.mailchimp.com/3.0/lists/${AUDIENCE}/members`,
+      `https://${SERVER}.api.mailchimp.com/3.0/lists/${AUDIENCE}/members/${subscriberHash}`,
       {
-        method: "POST",
+        method: "PUT",
         headers: {
-          Authorization: `Basic ${Buffer.from("anystring:" + API_KEY).toString("base64")}`,
+          Authorization: authHeader,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           email_address: email,
-          status: "subscribed",
-          tags: ["Aaron Lewis"],
+          status_if_new: "subscribed",
           merge_fields: {
             FNAME: firstName,
             LNAME: lastName,
@@ -123,11 +130,56 @@ export async function POST(request: NextRequest) {
 
     const data = await res.json();
 
-    if (res.ok) {
-      // Laylo subscription (secondary — failures don't affect user response)
-      const LAYLO_KEY = process.env.LAYLO_API_KEY;
-      if (LAYLO_KEY) {
+    if (!res.ok) {
+      console.error("Mailchimp error:", data.title, data.detail);
+      return NextResponse.json(
+        { success: false, error: "Something went wrong" },
+        { status: 500 }
+      );
+    }
+
+    // Tags require a separate call — PUT doesn't support them
+    try {
+      await fetch(
+        `https://${SERVER}.api.mailchimp.com/3.0/lists/${AUDIENCE}/members/${subscriberHash}/tags`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: authHeader,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            tags: [{ name: ARTIST_TAG, status: "active" }],
+          }),
+        }
+      );
+    } catch (err) {
+      console.error("Mailchimp tag error:", err);
+    }
+
+    // Laylo subscription — runs for both new and existing Mailchimp subscribers
+    const LAYLO_KEY = process.env.LAYLO_API_KEY;
+    if (LAYLO_KEY) {
+      try {
+        await fetch("https://laylo.com/api/graphql", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${LAYLO_KEY}`,
+          },
+          body: JSON.stringify({
+            query: "mutation($email: String) { subscribeToUser(email: $email) }",
+            variables: { email },
+          }),
+        });
+      } catch (err) {
+        console.error("Laylo email error:", err);
+      }
+
+      if (phone) {
         try {
+          const digits = phone.replace(/\D/g, "");
+          const formatted = digits.startsWith("1") ? `+${digits}` : `+1${digits}`;
           await fetch("https://laylo.com/api/graphql", {
             method: "POST",
             headers: {
@@ -135,50 +187,17 @@ export async function POST(request: NextRequest) {
               Authorization: `Bearer ${LAYLO_KEY}`,
             },
             body: JSON.stringify({
-              query: "mutation($email: String) { subscribeToUser(email: $email) }",
-              variables: { email },
+              query: "mutation($phoneNumber: String) { subscribeToUser(phoneNumber: $phoneNumber) }",
+              variables: { phoneNumber: formatted },
             }),
           });
         } catch (err) {
-          console.error("Laylo email error:", err);
-        }
-
-        if (phone) {
-          try {
-            const digits = phone.replace(/\D/g, "");
-            const formatted = digits.startsWith("1") ? `+${digits}` : `+1${digits}`;
-            await fetch("https://laylo.com/api/graphql", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${LAYLO_KEY}`,
-              },
-              body: JSON.stringify({
-                query: "mutation($phoneNumber: String) { subscribeToUser(phoneNumber: $phoneNumber) }",
-                variables: { phoneNumber: formatted },
-              }),
-            });
-          } catch (err) {
-            console.error("Laylo phone error:", err);
-          }
+          console.error("Laylo phone error:", err);
         }
       }
-
-      return NextResponse.json({ success: true });
     }
 
-    if (res.status === 400 && data.title === "Member Exists") {
-      return NextResponse.json(
-        { success: false, error: "already_subscribed" },
-        { status: 409 }
-      );
-    }
-
-    console.error("Mailchimp error:", data.title, data.detail);
-    return NextResponse.json(
-      { success: false, error: "Something went wrong" },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: true });
   } catch (err) {
     console.error("Subscribe route error:", err);
     return NextResponse.json(
