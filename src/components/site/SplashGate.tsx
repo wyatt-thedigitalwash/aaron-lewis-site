@@ -25,12 +25,12 @@ export function SplashGate({ children }: { children: React.ReactNode }) {
       setState("site");
       return;
     }
-    const alreadyDismissed = sessionStorage.getItem("splash_dismissed") === "true";
+    const alreadyDismissed = sessionStorage.getItem("splash_dismissed_album") === "true";
     setState(alreadyDismissed ? "site" : "splash");
   }, [isLanding]);
 
   const dismiss = useCallback(() => {
-    sessionStorage.setItem("splash_dismissed", "true");
+    sessionStorage.setItem("splash_dismissed_album", "true");
     setState("closing");
     setTimeout(() => setState("site"), 500);
   }, []);

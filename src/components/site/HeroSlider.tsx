@@ -51,7 +51,7 @@ export function HeroSlider() {
             href={PRESAVE_URL}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="Pre-save Give My Country Back (opens in new tab)"
+            aria-label="Listen to Give My Country Back (opens in new tab)"
             className="mx-auto inline-block transition-opacity duration-200 hover:opacity-90"
           >
             <Image

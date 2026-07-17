@@ -1,6 +1,6 @@
 export type CampaignState = "PRE_SAVE" | "AVAILABLE_NOW";
 
-export const CAMPAIGN_STATE: CampaignState = "PRE_SAVE";
+export const CAMPAIGN_STATE: CampaignState = "AVAILABLE_NOW";
 
 export const ALBUM_TITLE = "Give My Country Back";
 export const RELEASE_DATE = "July 17, 2026";
@@ -11,5 +11,5 @@ export function ctaCopy(): string {
 }
 
 export function availabilityCopy(): string {
-  return CAMPAIGN_STATE === "PRE_SAVE" ? "Available July 17" : "Available Now";
+  return CAMPAIGN_STATE === "PRE_SAVE" ? "Available July 17" : "New Album Out Now";
 }

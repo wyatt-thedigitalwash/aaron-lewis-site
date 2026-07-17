@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import Image from "next/image";
+import { PRESAVE_URL } from "@/lib/campaign";
 import { useSplash } from "./SplashGate";
 
 export function SplashPage() {
@@ -23,7 +24,7 @@ export function SplashPage() {
     <div
       role="dialog"
       aria-modal="true"
-      aria-label="New single announcement"
+      aria-label="New album announcement"
       className="fixed inset-0 z-[9999]"
       style={{
         backgroundColor: "#1a1a1a",
@@ -37,7 +38,7 @@ export function SplashPage() {
         className="absolute inset-0 md:hidden"
         style={{
           backgroundImage:
-            "url(/heroes/AarowLewis_SingleSplashPage_HeroMobile.png)",
+            "url(/heroes/AarowLewis_GiveMyCountryBack_Album_HeroMobile.jpg)",
           backgroundSize: "cover",
           backgroundPosition: "center",
           opacity: 0.15,
@@ -50,7 +51,7 @@ export function SplashPage() {
         className="absolute inset-0 hidden md:block"
         style={{
           backgroundImage:
-            "url(/heroes/AarowLewis_SingleSplashPage_HeroDesktop.jpg)",
+            "url(/heroes/AarowLewis_GiveMyCountryBack_Album_HeroDesktop.jpg)",
           backgroundSize: "cover",
           backgroundPosition: "center",
           opacity: 0.15,
@@ -80,8 +81,8 @@ export function SplashPage() {
             }}
           >
             <Image
-              src="/singles/AaronLewis_GiveMyCountryBack_Single.png"
-              alt="Give My Country Back single cover"
+              src="/album_art/AarowLewis_GiveMyCountryBack_AlbumCover.jpg"
+              alt="Give My Country Back album cover"
               fill
               className="object-cover"
               priority
@@ -94,18 +95,25 @@ export function SplashPage() {
           <div className="flex flex-col items-center text-center">
             {/* Logo */}
             <div
-              className="relative h-auto w-[260px] min-[480px]:w-[300px] md:w-[clamp(340px,30vw,520px)]"
+              className="relative h-auto w-[280px] min-[480px]:w-[340px] md:w-[clamp(360px,32vw,540px)]"
               style={{ animation: "splashFadeUp 600ms ease 500ms both" }}
             >
               <Image
-                src="/branding/AaronLewis_SingleGiveMyCountryBack_WhiteLogo.png"
-                alt="Aaron Lewis - Give My Country Back - New Single"
-                width={800}
-                height={800}
+                src="/branding/ArrowLewis_GiveMyCountryBack_LogoText.png"
+                alt="Aaron Lewis - Give My Country Back"
+                width={1600}
+                height={360}
                 className="h-auto w-full"
                 priority
               />
             </div>
+
+            <p
+              className="mt-4 font-display text-2xl text-ink min-[480px]:text-3xl md:text-[clamp(1.75rem,2.5vw,2.5rem)]"
+              style={{ animation: "splashFadeUp 600ms ease 650ms both" }}
+            >
+              New Album Out Now
+            </p>
 
             {/* Buttons */}
             <div
@@ -113,7 +121,7 @@ export function SplashPage() {
               style={{ animation: "splashFadeUp 600ms ease 800ms both" }}
             >
               <a
-                href="https://aaronlewis.ffm.to/givemycountryback"
+                href={PRESAVE_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full min-[480px]:w-auto bg-accent px-10 py-3.5 text-center text-[0.75rem] font-bold uppercase tracking-[0.15em] text-white transition-colors hover:bg-accent-hover"

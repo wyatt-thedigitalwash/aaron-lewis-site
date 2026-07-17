@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { FadeIn } from "@/components/site/FadeIn";
 import { EmailSignup } from "@/components/site/EmailSignup";
-import { CountdownTimer, PreOrderButton } from "@/components/site/CountdownTimer";
+import { HeroCta } from "@/components/site/HeroCta";
 import { ShopifyCollection } from "@/components/site/ShopifyCollection";
 
 export const metadata: Metadata = {
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   robots: "noindex, nofollow",
 };
 
-/* ─── Section 1: Hero with Countdown ─── */
+/* ─── Section 1: Hero ─── */
 
 function HeroSection() {
   return (
@@ -68,8 +68,7 @@ function HeroSection() {
           />
 
           <div className="mt-8">
-            <CountdownTimer />
-            <PreOrderButton />
+            <HeroCta />
           </div>
         </div>
       </div>
@@ -110,13 +109,13 @@ function VinylSection() {
             className="font-display leading-none text-accent"
             style={{ fontSize: "clamp(2.5rem, 6vw, 5rem)", letterSpacing: "-0.02em" }}
           >
-            Album Out July 17th
+            Album Out Now
           </p>
           <p
             className="mt-2 font-display text-ink"
             style={{ fontSize: "clamp(1.5rem, 3vw, 2.5rem)" }}
           >
-            Pre-Order Your Exclusive Vinyl Now
+            Order Your Exclusive Vinyl Now
           </p>
           <div
             className="mx-auto mt-6 mb-12"
@@ -130,23 +129,14 @@ function VinylSection() {
   );
 }
 
-/* ─── Section 3: Album Pre-Save (split layout) ─── */
+/* ─── Section 3: Album Streaming (split layout) ─── */
 
 const ALBUM_BUTTONS = [
   { label: "Download on iTunes", href: "https://aaronlewis.ffm.to/givemycountryback-al" },
-  { label: "Pre-Save on Spotify", href: "https://aaronlewis.ffm.to/givemycountryback-al" },
-  { label: "Pre-Add on Apple Music", href: "https://aaronlewis.ffm.to/givemycountryback-al" },
-  { label: "Pre-Save on Amazon Music", href: "https://aaronlewis.ffm.to/givemycountryback-al" },
-  { label: "Pre-Save on YouTube Music", href: "https://aaronlewis.ffm.to/givemycountryback-al" },
-];
-
-const SINGLE_BUTTONS = [
-  { label: "Spotify", href: "https://open.spotify.com/track/2FL6eDT5elqDFPCo0XnkHo" },
-  { label: "Apple Music", href: "https://music.apple.com/us/song/give-my-country-back/6767604468" },
-  { label: "Amazon Music", href: "https://music.amazon.com/tracks/B0H12S6DHB/?ref=dm_ff_amazonmusic_3p&tag=featurefm-20" },
-  { label: "YouTube Music", href: "https://music.youtube.com/watch?v=M9Wo_In0X6U" },
-  { label: "iTunes", href: "https://geo.music.apple.com/us/album/give-my-country-back/6767604325?app=itunes&ls=1" },
-  { label: "YouTube", href: "https://www.youtube.com/watch?v=M9Wo_In0X6U" },
+  { label: "Listen on Spotify", href: "https://aaronlewis.ffm.to/givemycountryback-al" },
+  { label: "Listen on Apple Music", href: "https://aaronlewis.ffm.to/givemycountryback-al" },
+  { label: "Listen on Amazon Music", href: "https://aaronlewis.ffm.to/givemycountryback-al" },
+  { label: "Listen on YouTube Music", href: "https://aaronlewis.ffm.to/givemycountryback-al" },
 ];
 
 const dspBtnStyle = { fontFamily: "'Clarendon', serif" } as const;
@@ -170,7 +160,7 @@ function DspButtons({ buttons }: { buttons: { label: string; href: string }[] })
   );
 }
 
-function AlbumPreSaveSection() {
+function AlbumStreamingSection() {
   return (
     <section className="bg-bg px-6 py-20 md:px-8">
       <div className="mx-auto flex max-w-[1200px] flex-col items-center md:flex-row md:items-center">
@@ -195,54 +185,6 @@ function AlbumPreSaveSection() {
   );
 }
 
-/* ─── Section 4: Single Streaming (split layout, reversed) ─── */
-
-function SingleSection() {
-  return (
-    <section className="bg-bg px-6 py-20 md:px-8">
-      <div className="mx-auto flex max-w-[1200px] flex-col items-center md:flex-row-reverse">
-        {/* Right: Single art */}
-        <div className="flex w-full justify-center md:w-1/2">
-          <Image
-            src="/singles/AaronLewis_GiveMyCountryBack_Single.png"
-            alt="Give My Country Back single cover"
-            width={1080}
-            height={1080}
-            className="w-full md:w-full"
-            style={{ boxShadow: "0 16px 48px rgba(0,0,0,0.5)" }}
-          />
-        </div>
-
-        {/* Left: Content */}
-        <div className="mt-10 flex w-full flex-col items-center text-center md:items-start md:text-left md:mt-0 md:w-1/2 md:pr-[4vw]">
-          <p
-            className="text-[0.7rem] font-bold uppercase tracking-[0.25em] text-accent"
-            style={dspBtnStyle}
-          >
-            Single
-          </p>
-          <p
-            className="mt-3 font-display text-accent"
-            style={{ fontSize: "clamp(2.5rem, 4vw, 3.25rem)" }}
-          >
-            Give My Country Back
-          </p>
-          <p
-            className="mt-2 font-display text-ink"
-            style={{ fontSize: "clamp(1.25rem, 2.5vw, 1.75rem)" }}
-          >
-            Listen Now
-          </p>
-          <div className="mt-8 w-full">
-            <DspButtons buttons={SINGLE_BUTTONS} />
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-
 /* ─── Page ─── */
 
 export default function GmcbPage() {
@@ -253,10 +195,7 @@ export default function GmcbPage() {
         <VinylSection />
       </FadeIn>
       <FadeIn>
-        <AlbumPreSaveSection />
-      </FadeIn>
-      <FadeIn>
-        <SingleSection />
+        <AlbumStreamingSection />
       </FadeIn>
       <FadeIn>
         <section className="bg-elevated px-6 py-20 md:px-8">
