@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { PRESAVE_URL } from "@/lib/campaign";
 import { useSplash } from "./SplashGate";
 
@@ -150,6 +151,36 @@ export function SplashPage() {
                 Enter Site
               </button>
             </div>
+
+            {/* Arbitration / class-action notice, directly under the entry
+                buttons so no visitor can claim they had no notice of it. */}
+            <p
+              className="mt-5 max-w-[320px] text-center text-[11px] leading-relaxed tracking-[0.3px] text-white/55 min-[480px]:max-w-[440px]"
+              style={{ animation: "splashFadeUp 600ms ease 950ms both" }}
+            >
+              By entering, you consent to our{" "}
+              <Link
+                href="/legal/terms"
+                className="font-semibold text-white/85 underline decoration-white/40 underline-offset-2 transition-colors hover:text-accent"
+              >
+                Terms &amp; Conditions
+              </Link>
+              , including{" "}
+              <Link
+                href="/legal/terms#section-17"
+                className="font-semibold text-white/85 underline decoration-white/40 underline-offset-2 transition-colors hover:text-accent"
+              >
+                binding arbitration
+              </Link>{" "}
+              and a{" "}
+              <Link
+                href="/legal/terms#class-action-waiver"
+                className="font-semibold text-white/85 underline decoration-white/40 underline-offset-2 transition-colors hover:text-accent"
+              >
+                waiver of class action rights
+              </Link>
+              .
+            </p>
           </div>
         </div>
       </div>

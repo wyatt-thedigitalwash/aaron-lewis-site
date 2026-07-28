@@ -3,6 +3,9 @@ import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { Tracking } from "@/components/site/Tracking";
 import { SplashGate } from "@/components/site/SplashGate";
+import CookieConsent from "@/components/consent/CookieConsent";
+import TermsGate from "@/components/consent/TermsGate";
+import AnchorScroll from "@/components/shared/AnchorScroll";
 import { musicGroupSchema } from "@/lib/schema";
 import "./globals.css";
 
@@ -82,10 +85,16 @@ export default function RootLayout({
         <a href="#main-content" className="skip-nav">
           Skip to main content
         </a>
+        <AnchorScroll />
         <SplashGate>
           <Header />
           <main id="main-content" className="flex-1">{children}</main>
           <Footer />
+          {/* Cookie consent banner and Terms notice. Mounted inside SplashGate
+              so they can read the splash state and stay hidden until a
+              first-time visitor has entered the site. */}
+          <CookieConsent />
+          <TermsGate />
         </SplashGate>
       </body>
     </html>

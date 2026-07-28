@@ -1,12 +1,18 @@
 // Social icons moved to Header per design update. Footer is copyright + legal only.
 
 import Link from "next/link";
+import CookieChoicesLink from "@/components/legal/CookieChoicesLink";
 
 const LEGAL_LINKS = [
-  { label: "Privacy", href: "/privacy" },
-  { label: "Terms & Conditions", href: "https://www.bigmachinelabelgroup.com/terms/" },
-  { label: "Do Not Sell My Personal Information", href: "/privacy" },
+  { label: "Terms", href: "/legal/terms" },
+  { label: "Privacy", href: "/legal/privacy" },
+  { label: "Copyright (DMCA)", href: "/legal/dmca" },
+  { label: "Cybersecurity", href: "/legal/cybersecurity" },
+  { label: "TCPA", href: "/legal/tcpa" },
+  { label: "Do Not Sell My Personal Information", href: "/legal/privacy#s10-2" },
 ];
+
+const LINK_CLASS = "inline-block py-2 hover:text-ink";
 
 function FooterCopyright() {
   return (
@@ -19,31 +25,18 @@ function FooterCopyright() {
 
         {/* Legal links */}
         <div className="flex flex-wrap items-center justify-center gap-x-1 text-xs text-ink-muted">
-          {LEGAL_LINKS.map((link, i) => {
-            const isExternal = link.href.startsWith("http");
-            return (
-              <span key={link.label} className="flex items-center gap-1">
-                {i > 0 && <span aria-hidden="true">&middot;</span>}
-                {isExternal ? (
-                  <a
-                    href={link.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-block py-2 hover:text-ink"
-                  >
-                    {link.label}
-                  </a>
-                ) : (
-                  <Link
-                    href={link.href}
-                    className="inline-block py-2 hover:text-ink"
-                  >
-                    {link.label}
-                  </Link>
-                )}
-              </span>
-            );
-          })}
+          {LEGAL_LINKS.map((link, i) => (
+            <span key={link.label} className="flex items-center gap-1">
+              {i > 0 && <span aria-hidden="true">&middot;</span>}
+              <Link href={link.href} className={LINK_CLASS}>
+                {link.label}
+              </Link>
+            </span>
+          ))}
+          <span className="flex items-center gap-1">
+            <span aria-hidden="true">&middot;</span>
+            <CookieChoicesLink className={LINK_CLASS} />
+          </span>
         </div>
       </div>
     </section>

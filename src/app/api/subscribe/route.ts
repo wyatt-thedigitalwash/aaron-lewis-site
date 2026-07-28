@@ -1,207 +1,127 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
-import { createHash } from "crypto";
+import { NextRequest, NextResponse } from "next/server";
+import { validateSubscriber } from "@/lib/subscribe-validation";
+import { subscribeToMailchimp, type MailchimpResult } from "@/lib/mailchimp";
+import { subscribeToLaylo, type LayloResult } from "@/lib/laylo";
 
-// ---------- Rate limiting (in-memory, resets on cold start) ----------
-const rateMap = new Map<string, { count: number; resetAt: number }>();
-const RATE_LIMIT = 3;
-const RATE_WINDOW = 5 * 60 * 1000; // 5 minutes
+// In-memory rate limiting: IP -> { count, resetAt }
+const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
+const RATE_LIMIT_MAX = 5;
+const RATE_LIMIT_WINDOW = 5 * 60 * 1000; // 5 minutes
+
+function getClientIp(req: NextRequest): string {
+  return (
+    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    req.headers.get("x-real-ip") ||
+    "unknown"
+  );
+}
+
+// Best-effort, per-instance limiter. Prune expired entries so the map cannot
+// grow unbounded from one-off IPs on a long-lived (warm) server instance.
+function pruneRateLimit(now: number): void {
+  for (const [ip, entry] of rateLimitMap) {
+    if (now > entry.resetAt) rateLimitMap.delete(ip);
+  }
+}
 
 function isRateLimited(ip: string): boolean {
   const now = Date.now();
-  const entry = rateMap.get(ip);
+  if (rateLimitMap.size > 5000) pruneRateLimit(now);
+
+  const entry = rateLimitMap.get(ip);
   if (!entry || now > entry.resetAt) {
-    rateMap.set(ip, { count: 1, resetAt: now + RATE_WINDOW });
+    rateLimitMap.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW });
     return false;
   }
-  entry.count += 1;
-  return entry.count > RATE_LIMIT;
+  entry.count++;
+  return entry.count > RATE_LIMIT_MAX;
 }
 
-// ---------- Validation helpers ----------
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const MAX_NAME = 100;
-const MAX_EMAIL = 254;
-const MAX_ZIP = 20;
-const MAX_PHONE = 30;
-const MAX_COUNTRY = 100;
-
-function sanitize(value: unknown, maxLen: number): string {
-  if (typeof value !== "string") return "";
-  return value.trim().slice(0, maxLen);
-}
-
-// ---------- Handler ----------
-export async function POST(request: NextRequest) {
-  // Rate limit by IP
-  const forwarded = request.headers.get("x-forwarded-for");
-  const ip = forwarded?.split(",")[0]?.trim() || "unknown";
-  if (isRateLimited(ip)) {
-    return NextResponse.json(
-      { success: false, error: "Too many requests. Please try again later." },
-      { status: 429 }
-    );
-  }
-
-  let body: Record<string, unknown>;
+export async function POST(req: NextRequest) {
   try {
-    body = await request.json();
-  } catch {
-    return NextResponse.json(
-      { success: false, error: "Invalid request" },
-      { status: 400 }
-    );
-  }
-
-  // Honeypot — if the hidden field has a value, silently succeed
-  if (body.website) {
-    return NextResponse.json({ success: true });
-  }
-
-  // Sanitize and validate
-  const firstName = sanitize(body.firstName, MAX_NAME);
-  const lastName = sanitize(body.lastName, MAX_NAME);
-  const email = sanitize(body.email, MAX_EMAIL);
-  const zipCode = sanitize(body.zipCode, MAX_ZIP);
-  const phone = sanitize(body.phone, MAX_PHONE);
-  const country = sanitize(body.country, MAX_COUNTRY);
-
-  if (!firstName) {
-    return NextResponse.json(
-      { success: false, error: "First name is required" },
-      { status: 400 }
-    );
-  }
-  if (!lastName) {
-    return NextResponse.json(
-      { success: false, error: "Last name is required" },
-      { status: 400 }
-    );
-  }
-  if (!email || !EMAIL_RE.test(email)) {
-    return NextResponse.json(
-      { success: false, error: "A valid email address is required" },
-      { status: 400 }
-    );
-  }
-
-  const API_KEY = process.env.MAILCHIMP_API_KEY;
-  const SERVER = process.env.MAILCHIMP_SERVER_PREFIX;
-  const AUDIENCE = process.env.MAILCHIMP_AUDIENCE_ID;
-
-  if (!API_KEY || !SERVER || !AUDIENCE) {
-    console.error("Missing Mailchimp environment variables");
-    return NextResponse.json(
-      { success: false, error: "Something went wrong" },
-      { status: 500 }
-    );
-  }
-
-  const ARTIST_TAG = "Aaron Lewis";
-  const authHeader = `Basic ${Buffer.from("anystring:" + API_KEY).toString("base64")}`;
-  const subscriberHash = createHash("md5")
-    .update(email.toLowerCase())
-    .digest("hex");
-
-  try {
-    // PUT upserts — creates new members or updates existing ones
-    const res = await fetch(
-      `https://${SERVER}.api.mailchimp.com/3.0/lists/${AUDIENCE}/members/${subscriberHash}`,
-      {
-        method: "PUT",
-        headers: {
-          Authorization: authHeader,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email_address: email,
-          status_if_new: "subscribed",
-          merge_fields: {
-            FNAME: firstName,
-            LNAME: lastName,
-            MMERGE14: zipCode,
-            PHONE: phone,
-            MMERGE12: country,
-            MMERGE9: "aaronlewismusic.com",
-          },
-        }),
-      }
-    );
-
-    const data = await res.json();
-
-    if (!res.ok) {
-      console.error("Mailchimp error:", data.title, data.detail);
+    const ip = getClientIp(req);
+    if (isRateLimited(ip)) {
       return NextResponse.json(
-        { success: false, error: "Something went wrong" },
-        { status: 500 }
+        { error: "Too many requests. Please try again later." },
+        { status: 429 }
       );
     }
 
-    // Tags require a separate call — PUT doesn't support them
-    try {
-      await fetch(
-        `https://${SERVER}.api.mailchimp.com/3.0/lists/${AUDIENCE}/members/${subscriberHash}/tags`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: authHeader,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            tags: [{ name: ARTIST_TAG, status: "active" }],
-          }),
-        }
+    const body = await req.json().catch(() => null);
+    if (!body || typeof body !== "object") {
+      return NextResponse.json({ error: "Invalid request." }, { status: 400 });
+    }
+
+    // Honeypot: silently accept bots without hitting any provider.
+    if (body.website) {
+      return NextResponse.json({ success: true });
+    }
+
+    const validation = validateSubscriber(body as Record<string, unknown>);
+    if (!validation.ok) {
+      return NextResponse.json(
+        { error: validation.message, field: validation.field },
+        { status: 400 }
       );
-    } catch (err) {
-      console.error("Mailchimp tag error:", err);
+    }
+    const data = validation.data;
+
+    // Mailchimp and Laylo run fully independently. allSettled guarantees one
+    // path can never block or reject the other, and each helper already
+    // catches its own errors and returns a typed result.
+    const [mcSettled, layloSettled] = await Promise.allSettled([
+      subscribeToMailchimp(data),
+      subscribeToLaylo(data),
+    ]);
+
+    const mc: MailchimpResult =
+      mcSettled.status === "fulfilled"
+        ? mcSettled.value
+        : { ok: false, kind: "error", error: "rejected" };
+    const laylo: LayloResult =
+      layloSettled.status === "fulfilled"
+        ? layloSettled.value
+        : { ok: false, error: "rejected" };
+
+    // Laylo is best-effort: log its outcome but never surface it to the user.
+    if (!laylo.ok) {
+      console.error("[Subscribe] Laylo capture failed for", data.email, laylo.error);
     }
 
-    // Laylo subscription — runs for both new and existing Mailchimp subscribers
-    const LAYLO_KEY = process.env.LAYLO_API_KEY;
-    if (LAYLO_KEY) {
-      try {
-        await fetch("https://laylo.com/api/graphql", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${LAYLO_KEY}`,
-          },
-          body: JSON.stringify({
-            query: "mutation($email: String) { subscribeToUser(email: $email) }",
-            variables: { email },
-          }),
-        });
-      } catch (err) {
-        console.error("Laylo email error:", err);
-      }
-
-      if (phone) {
-        try {
-          const digits = phone.replace(/\D/g, "");
-          const formatted = digits.startsWith("1") ? `+${digits}` : `+1${digits}`;
-          await fetch("https://laylo.com/api/graphql", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${LAYLO_KEY}`,
-            },
-            body: JSON.stringify({
-              query: "mutation($phoneNumber: String) { subscribeToUser(phoneNumber: $phoneNumber) }",
-              variables: { phoneNumber: formatted },
-            }),
-          });
-        } catch (err) {
-          console.error("Laylo phone error:", err);
-        }
-      }
+    // Mailchimp is the primary/durable store and decides the user-facing result.
+    if (mc.ok) {
+      return NextResponse.json({ success: true });
+    }
+    // Previously opted-out: treat as a friendly soft success, not an error.
+    if (mc.kind === "compliance") {
+      return NextResponse.json({
+        success: true,
+        message:
+          "You may already be on our list. If not, please re-subscribe from our signup form.",
+      });
+    }
+    if (mc.kind === "invalid_email") {
+      return NextResponse.json(
+        { error: "Please check your email address and try again." },
+        { status: 400 }
+      );
     }
 
-    return NextResponse.json({ success: true });
-  } catch (err) {
-    console.error("Subscribe route error:", err);
+    // Hard Mailchimp failure. Laylo may still hold the data; log for reconciliation.
+    console.error(
+      "[Subscribe] Mailchimp failed for",
+      data.email,
+      mc.error,
+      "laylo_ok=" + laylo.ok
+    );
     return NextResponse.json(
-      { success: false, error: "Something went wrong" },
+      { error: "Something went wrong. Please try again." },
+      { status: 502 }
+    );
+  } catch (err) {
+    console.error("[Subscribe] Unexpected error", err);
+    return NextResponse.json(
+      { error: "Something went wrong. Please try again." },
       { status: 500 }
     );
   }
